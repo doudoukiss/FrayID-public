@@ -544,3 +544,11 @@ then a close-fitting clothed case, then loose clothing. Each person/video is
 isolated, and a regional or bare-torso result cannot qualify a full clothed-human
 endpoint. The deferred MANTLE route may resume only after outer-surface
 promotion and a separately accepted contract.
+
+A local Stage-1 capture is now separately registered. It requires one fixed
+camera, continuously visible mirrored preview, lossless native-timing video,
+no audio, complete upper-body framing, and separate bidirectional rotations
+using natural front/side/back cues rather than human-estimated degrees. Its
+claim ceiling is a unified outer-surface method fixture; all separated-garment,
+material, contact, rest-metric, strain, metric-accuracy, and ground-truth claims
+remain forbidden.

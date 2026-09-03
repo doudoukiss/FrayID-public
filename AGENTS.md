@@ -26,7 +26,9 @@ Current execution state: R01 is registered and its local public-source/data
 binding passed. Its one authorized private build ended when the hosted runner
 exhausted disk before artifact publication; zero retries were made. No runtime,
 build, or experiment is active. A new disk-preflighted build successor requires
-separate registration and authorization. Capture remains unauthorized.
+separate registration and authorization. A separate local Stage-1 capture is
+authorized only for a unified outer-surface method fixture; it requires visible
+preview and cannot support a garment-reconstruction claim.
 
 ## Boundaries
 

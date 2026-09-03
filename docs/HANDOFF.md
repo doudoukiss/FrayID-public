@@ -790,3 +790,10 @@ Continuing requires a separately registered successor whose changed mechanism
 is a disk-capacity preflight and sufficiently provisioned builder, followed by
 fresh owner authorization. R01 remains `built`; R02, R03, runtime import,
 device qualification, and official training have not started.
+
+The owner separately authorized a new local Stage-1 capture for unified outer-
+surface method development. It uses one fixed camera, an always-visible mirrored
+preview, saved unmirrored lossless clips, no audio, and separate clockwise and
+counter-clockwise rotations guided by natural front/side/back cues. It cannot
+support separated-garment, material-state, cloth-physics, metric-accuracy, or
+ground-truth claims. Registration opened no camera and saved no media.

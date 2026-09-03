@@ -54,6 +54,11 @@ runtime still does not exist. No build, runtime import, GPU worker, training,
 project-evidence read, or capture is active. Any successor must be separately
 registered with an explicit disk-capacity preflight and owner authorization.
 
+A separate local Stage-1 capture is registered for one fixed camera, visible
+mirrored preview, and lossless bidirectional upper-body recording. It may
+support only unified outer-surface method development; separated-garment,
+material, cloth-physics, metric-accuracy, and ground-truth claims are forbidden.
+
 ## Pipeline
 
 ```text
