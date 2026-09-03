@@ -172,6 +172,73 @@ from frayid.v2.turntable_ba import (
     diagnose_real_turntable_factor_route,
     write_turntable_ba_benchmark,
 )
+from frayid.v3.boundaries import infer_boundary_hypotheses, public_boundary_fixture
+from frayid.v3.controlled_atlas import EXPERIMENT_ID as CONTROLLED_ATLAS_EXPERIMENT_ID
+from frayid.v3.controlled_atlas import fit_public_controlled_atlas
+from frayid.v3.controlled_camera_calibration import (
+    calibrate_controlled_cameras,
+    calibrate_controlled_training_camera,
+    controlled_calibration_session_template,
+    controlled_training_calibration_session_template,
+    create_controlled_charuco_board,
+)
+from frayid.v3.controlled_capture import EXPERIMENT_ID as CONTROLLED_CAPTURE_EXPERIMENT_ID
+from frayid.v3.controlled_capture import (
+    audit_controlled_capture_sources,
+    build_controlled_capture_evidence_master,
+    controlled_calibration_templates,
+    controlled_capture_template,
+    controlled_single_camera_capture_template,
+    validate_controlled_capture_declaration,
+)
+from frayid.v3.controlled_capture_cues import (
+    create_controlled_capture_cue_kit,
+    detect_controlled_capture_cues,
+)
+from frayid.v3.controlled_chart_binding import prepare_controlled_chart_requests
+from frayid.v3.controlled_chart_execution import (
+    build_controlled_material_chart_graph,
+    materialize_controlled_chart_seeds,
+    validate_controlled_tracker_output_bundle,
+)
+from frayid.v3.controlled_charts import (
+    public_controlled_chart_fixture,
+    qualify_controlled_chart_robustness,
+)
+from frayid.v3.controlled_factor_graph import (
+    fit_controlled_fixed_camera_factor_graph,
+    public_controlled_factor_graph_fixture,
+)
+from frayid.v3.controlled_semantics import bind_controlled_semantic_replays
+from frayid.v3.controlled_target import register_controlled_method_case
+from frayid.v3.controlled_tracking import run_controlled_tracker
+from frayid.v3.detail import public_detail_fixture, refine_differential_surface
+from frayid.v3.evaluation import evaluate_mantle, report_dry_run
+from frayid.v3.factor_graph import fit_fixed_camera_factor_graph, public_factor_graph_fixture
+from frayid.v3.guided_capture import (
+    create_guided_display_board_kit,
+    run_guided_calibration_capture,
+    run_guided_rotation_capture,
+    run_guided_rotation_rehearsal,
+    run_training_camera_preview,
+)
+from frayid.v3.localized_observability import audit_localized_rotation_observability
+from frayid.v3.material_atlas import fit_public_atlas
+from frayid.v3.material_charts import build_material_chart_graph, public_chart_fixture
+from frayid.v3.method_source_selection import audit_method_case_source_selection
+from frayid.v3.nonuniform_correspondence import audit_nonuniform_cycle_correspondence
+from frayid.v3.p12_identifiability import audit_l03_identifiability
+from frayid.v3.photometry import diagnose_photometry, public_photometry_fixture
+from frayid.v3.real_material_charts import build_real_material_chart_graph, real_q04_summary
+from frayid.v3.recapture import plan_recapture
+from frayid.v3.regional_diagnostics import build_regional_geometry_failure_atlas
+from frayid.v3.tracker_audit import audit_tracker_sources
+from frayid.v3.tracker_calibration import (
+    calibrate_cotracker_public_cloth,
+    calibrate_lk_public_cloth,
+    calibrate_tapir_public_cloth,
+    public_tracker_calibration_status,
+)
 
 app = typer.Typer(help="FrayID canonical clothed-surface reconstruction.", no_args_is_help=True)
 assets_app = typer.Typer(help="Verify controlled local assets.", no_args_is_help=True)
@@ -186,11 +253,16 @@ v2_app = typer.Typer(
     help="Build and qualify the layered FrayID V2 successor without mutating V1.",
     no_args_is_help=True,
 )
+v3_app = typer.Typer(
+    help="Run fail-closed MANTLE qualification routes without mutating V2.",
+    no_args_is_help=True,
+)
 app.add_typer(assets_app, name="assets")
 app.add_typer(dataset_app, name="dataset")
 app.add_typer(initialize_app, name="initialize")
 app.add_typer(reconstruct_app, name="reconstruct")
 app.add_typer(v2_app, name="v2")
+app.add_typer(v3_app, name="v3")
 
 ConfigOption = Annotated[
     Path,
@@ -242,6 +314,24 @@ DEFAULT_L03_OUTPUT_ROOT = Path(
 def _emit(value: Any) -> None:
     payload = value.model_dump(mode="json") if hasattr(value, "model_dump") else value
     typer.echo(json.dumps(payload, indent=2, sort_keys=True))
+
+
+def _write_v3_once(output: Path, payload: Any) -> Path:
+    """Write one immutable report beneath outputs/post_v3."""
+    absolute = output.resolve()
+    try:
+        relative = absolute.relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("V3 output must be inside the current project") from exc
+    if len(relative.parts) < 5 or relative.parts[:2] != ("outputs", "post_v3"):
+        raise typer.BadParameter(
+            "V3 output must be outputs/post_v3/<experiment-id>/<run-id>/<file>"
+        )
+    reject_sealed_capability([output])
+    if output.exists():
+        raise typer.BadParameter(f"immutable V3 output already exists: {output}")
+    write_json(output, payload)
+    return output
 
 
 @app.command()
@@ -3506,6 +3596,1098 @@ def v2_report_dry_run(
             "sealed_test_accesses": 0,
         }
     )
+
+
+@v3_app.command("audit-l03")
+def v3_audit_l03(
+    output: Annotated[Path, typer.Option("--output")] = Path(
+        "outputs/post_v3/postv3_p12_l03_semantic_offset_identifiability_audit_r01/"
+        "registered-20260903-r01/qualification/public_audit.json"
+    ),
+) -> None:
+    """Run the public analytic audit that permanently freezes L03 as a baseline."""
+    report = audit_l03_identifiability()
+    _write_v3_once(output, report)
+    _emit(report)
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("build-charts")
+def v3_build_charts(
+    output: Annotated[Path, typer.Option("--output")],
+    input_path: Annotated[Path | None, typer.Option("--input", exists=True, dir_okay=False)] = None,
+) -> None:
+    """Build Q04 from an audited proposal payload or its public synthetic fixture."""
+    payload = read_json(input_path) if input_path is not None else public_chart_fixture()
+    graph = build_material_chart_graph(payload)
+    _write_v3_once(output, graph)
+    _emit(graph)
+    if graph.status != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("qualify-controlled-charts")
+def v3_qualify_controlled_charts(
+    output: Annotated[Path, typer.Option("--output")],
+    input_path: Annotated[Path | None, typer.Option("--input", exists=True, dir_okay=False)] = None,
+) -> None:
+    """Stress Q05 against every single-source corruption and dropout."""
+    payload = read_json(input_path) if input_path is not None else public_controlled_chart_fixture()
+    report = qualify_controlled_chart_robustness(payload)
+    _write_v3_once(output, report)
+    _emit(report)
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("build-real-charts")
+def v3_build_real_charts(
+    output: Annotated[Path, typer.Option("--output")],
+    v00_master: Annotated[Path, typer.Option("--v00-master", exists=True, dir_okay=False)],
+    v00_qualification: Annotated[
+        Path, typer.Option("--v00-qualification", exists=True, dir_okay=False)
+    ],
+    t05_solution: Annotated[Path, typer.Option("--t05-solution", exists=True, dir_okay=False)],
+    q03_binding: Annotated[Path, typer.Option("--q03-binding", exists=True, dir_okay=False)],
+    q03_report: Annotated[Path, typer.Option("--q03-report", exists=True, dir_okay=False)],
+    source_audit: Annotated[Path, typer.Option("--source-audit", exists=True, dir_okay=False)],
+    tapir_report: Annotated[Path, typer.Option("--tapir-report", exists=True, dir_okay=False)],
+    cotracker_report: Annotated[
+        Path, typer.Option("--cotracker-report", exists=True, dir_okay=False)
+    ],
+    public_graph: Annotated[Path, typer.Option("--public-graph", exists=True, dir_okay=False)],
+    tapir_source_root: Annotated[
+        Path, typer.Option("--tapir-source-root", exists=True, file_okay=False)
+    ] = Path("external/tapnet-q04-c2cbab8"),
+    tapir_checkpoint: Annotated[
+        Path, typer.Option("--tapir-checkpoint", exists=True, dir_okay=False)
+    ] = Path("models/checkpoints/q04/tapir_checkpoint_panning.pt"),
+    cotracker_source_root: Annotated[
+        Path, typer.Option("--cotracker-source-root", exists=True, file_okay=False)
+    ] = Path("external/co-tracker-q04-82e02e8"),
+    cotracker_checkpoint: Annotated[
+        Path, typer.Option("--cotracker-checkpoint", exists=True, dir_okay=False)
+    ] = Path("models/checkpoints/q04/scaled_offline.pth"),
+    device: Annotated[str, typer.Option("--device")] = "cpu",
+) -> None:
+    """Build the immutable real Q04 graph from 144 training records only."""
+    graph = build_real_material_chart_graph(
+        v00_master_path=v00_master,
+        v00_qualification_path=v00_qualification,
+        t05_solution_path=t05_solution,
+        q03_binding_path=q03_binding,
+        q03_report_path=q03_report,
+        source_audit_path=source_audit,
+        tapir_calibration_path=tapir_report,
+        cotracker_calibration_path=cotracker_report,
+        public_graph_path=public_graph,
+        tapir_source_root=tapir_source_root,
+        tapir_checkpoint_path=tapir_checkpoint,
+        cotracker_source_root=cotracker_source_root,
+        cotracker_checkpoint_path=cotracker_checkpoint,
+        device_name=device,
+    )
+    _write_v3_once(output, graph)
+    _emit(real_q04_summary(graph))
+    if graph.status != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("audit-trackers")
+def v3_audit_trackers(
+    output: Annotated[Path, typer.Option("--output")] = Path(
+        "outputs/post_v3/postv3_q04_local_material_chart_graph_r01/"
+        "registered-20260903-r01/qualification/tracker_source_audit.json"
+    ),
+    registry: Annotated[Path, typer.Option("--registry", exists=True, dir_okay=False)] = Path(
+        "configs/evaluation/q04_tracker_source_registry_r01.yaml"
+    ),
+) -> None:
+    """Audit Q04 source, license, checkpoint, and local runtime without importing weights."""
+    report = audit_tracker_sources(registry)
+    _write_v3_once(output, report)
+    _emit(report)
+
+
+@v3_app.command("calibrate-trackers")
+def v3_calibrate_trackers(
+    output: Annotated[Path, typer.Option("--output")],
+    source_audit: Annotated[
+        Path | None, typer.Option("--source-audit", exists=True, dir_okay=False)
+    ] = None,
+    tapir_report: Annotated[
+        Path | None, typer.Option("--tapir-report", exists=True, dir_okay=False)
+    ] = None,
+    cotracker_report: Annotated[
+        Path | None, typer.Option("--cotracker-report", exists=True, dir_okay=False)
+    ] = None,
+    registry: Annotated[Path, typer.Option("--registry", exists=True, dir_okay=False)] = Path(
+        "configs/evaluation/q04_tracker_source_registry_r01.yaml"
+    ),
+) -> None:
+    """Calibrate real LK and report learned tracker blockers on public synthetic cloth."""
+    audit = read_json(source_audit) if source_audit is not None else audit_tracker_sources(registry)
+    lk_report = calibrate_lk_public_cloth()
+    learned_reports = [
+        read_json(path) for path in (tapir_report, cotracker_report) if path is not None
+    ]
+    status = public_tracker_calibration_status(lk_report, audit, learned_reports)
+    report = {
+        "schema_version": "frayid_v3_q04_public_tracker_calibration_bundle.v1",
+        "status": status["status"],
+        "source_audit": audit,
+        "lk_calibration": lk_report,
+        "aggregate": status,
+    }
+    _write_v3_once(output, report)
+    _emit(report)
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("calibrate-tapir")
+def v3_calibrate_tapir(
+    output: Annotated[Path, typer.Option("--output")],
+    source_root: Annotated[
+        Path, typer.Option("--source-root", exists=True, file_okay=False)
+    ] = Path("external/tapnet-q04-c2cbab8"),
+    checkpoint: Annotated[Path, typer.Option("--checkpoint", exists=True, dir_okay=False)] = Path(
+        "models/checkpoints/q04/tapir_checkpoint_panning.pt"
+    ),
+    device: Annotated[str, typer.Option("--device")] = "cpu",
+) -> None:
+    """Run the pinned Apache-licensed TAPIR checkpoint on public cloth only."""
+    report = calibrate_tapir_public_cloth(
+        source_root=source_root,
+        checkpoint_path=checkpoint,
+        expected_source_revision="c2cbab81cc06092b5f05bfe2da7bfec54e2079c9",
+        expected_checkpoint_sha256=(
+            "unavailable-in-public-snapshot-checkpoint-fingerprint-is-redacted"
+        ),
+        device_name=device,
+    )
+    _write_v3_once(output, report)
+    _emit(report)
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("calibrate-cotracker")
+def v3_calibrate_cotracker(
+    output: Annotated[Path, typer.Option("--output")],
+    source_root: Annotated[
+        Path, typer.Option("--source-root", exists=True, file_okay=False)
+    ] = Path("external/co-tracker-q04-82e02e8"),
+    checkpoint: Annotated[Path, typer.Option("--checkpoint", exists=True, dir_okay=False)] = Path(
+        "models/checkpoints/q04/scaled_offline.pth"
+    ),
+    device: Annotated[str, typer.Option("--device")] = "cpu",
+) -> None:
+    """Run the owner-authorized pinned CoTracker3 checkpoint on public cloth only."""
+    report = calibrate_cotracker_public_cloth(
+        source_root=source_root,
+        checkpoint_path=checkpoint,
+        expected_source_revision="82e02e8029753ad4ef13cf06be7f4fc5facdda4d",
+        expected_checkpoint_sha256=(
+            "unavailable-in-public-snapshot-checkpoint-fingerprint-is-redacted"
+        ),
+        device_name=device,
+    )
+    _write_v3_once(output, report)
+    _emit(report)
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("fit-factor-graph")
+def v3_fit_factor_graph(
+    output: Annotated[Path, typer.Option("--output")],
+    input_path: Annotated[Path | None, typer.Option("--input", exists=True, dir_okay=False)] = None,
+) -> None:
+    """Run T06 sparse trust-region fitting with analytically profiled anchors."""
+    payload = read_json(input_path) if input_path is not None else public_factor_graph_fixture()
+    solution = fit_fixed_camera_factor_graph(payload)
+    _write_v3_once(output, solution)
+    _emit(solution)
+    if solution.status != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("fit-controlled-factor-graph")
+def v3_fit_controlled_factor_graph(
+    output: Annotated[Path, typer.Option("--output")],
+    input_path: Annotated[Path | None, typer.Option("--input", exists=True, dir_okay=False)] = None,
+) -> None:
+    """Run the T07 bidirectional known-angle profiled-anchor core."""
+    payload = (
+        read_json(input_path)
+        if input_path is not None
+        else public_controlled_factor_graph_fixture()
+    )
+    report = fit_controlled_fixed_camera_factor_graph(payload)
+    _write_v3_once(output, report)
+    _emit(report)
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("infer-boundaries")
+def v3_infer_boundaries(
+    output: Annotated[Path, typer.Option("--output")],
+    input_path: Annotated[Path | None, typer.Option("--input", exists=True, dir_okay=False)] = None,
+) -> None:
+    """Infer L04 physical boundaries separately from contours, occlusions, and seams."""
+    payload = read_json(input_path) if input_path is not None else public_boundary_fixture()
+    hypotheses = infer_boundary_hypotheses(payload)
+    _write_v3_once(output, hypotheses)
+    _emit(hypotheses)
+    if hypotheses.status != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("fit-atlas")
+def v3_fit_atlas(
+    output_root: Annotated[Path, typer.Option("--output-root")] = Path(
+        "outputs/post_v3/postv3_l05_intrinsic_upper_garment_material_atlas_r01/"
+        "registered-20260903-r01/qualification/public_atlas"
+    ),
+) -> None:
+    """Construct and certify the public four-boundary intrinsic-atlas fixture."""
+    report_path = output_root / "atlas_report.json"
+    absolute = report_path.resolve()
+    try:
+        relative = absolute.relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("V3 output must be inside the current project") from exc
+    if len(relative.parts) < 5 or relative.parts[:2] != ("outputs", "post_v3"):
+        raise typer.BadParameter("V3 atlas output must be beneath outputs/post_v3")
+    atlas = fit_public_atlas(output_root)
+    _write_v3_once(report_path, atlas)
+    _emit(atlas)
+    if atlas.status != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("fit-controlled-atlas")
+def v3_fit_controlled_atlas(
+    output_root: Annotated[Path, typer.Option("--output-root")],
+) -> None:
+    """Build the public L06 bidirectional atlas and isolated evaluator core."""
+    try:
+        relative_output = output_root.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("L06 output must be inside the current project") from exc
+    if (
+        len(relative_output.parts) < 5
+        or relative_output.parts[:2] != ("outputs", "post_v3")
+        or relative_output.parts[2] != CONTROLLED_ATLAS_EXPERIMENT_ID
+    ):
+        raise typer.BadParameter(
+            "L06 output must be outputs/post_v3/"
+            f"{CONTROLLED_ATLAS_EXPERIMENT_ID}/<run-id>/<artifact-root>"
+        )
+    report = fit_public_controlled_atlas(output_root)
+    _emit(report)
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("refine-detail")
+def v3_refine_detail(
+    output: Annotated[Path, typer.Option("--output")],
+    input_path: Annotated[Path | None, typer.Option("--input", exists=True, dir_okay=False)] = None,
+) -> None:
+    """Run the G05 envelope/differential spectral qualification block."""
+    payload = read_json(input_path) if input_path is not None else public_detail_fixture()
+    report = refine_differential_surface(payload)
+    _write_v3_once(output, report)
+    _emit(report)
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("diagnose-photometry")
+def v3_diagnose_photometry(
+    output: Annotated[Path, typer.Option("--output")],
+    input_path: Annotated[Path | None, typer.Option("--input", exists=True, dir_okay=False)] = None,
+) -> None:
+    """Run optional P01 variable-projection diagnostics in documented linear light."""
+    payload = read_json(input_path) if input_path is not None else public_photometry_fixture()
+    report = diagnose_photometry(payload)
+    _write_v3_once(output, report)
+    _emit(report)
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("evaluate")
+def v3_evaluate(
+    input_path: Annotated[Path, typer.Option("--input", exists=True, dir_okay=False)],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Apply the H03 aggregate promotion gates to already-qualified immutable records."""
+    report = evaluate_mantle(read_json(input_path))
+    _write_v3_once(output, report)
+    _emit(report)
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("plan-recapture")
+def v3_plan_recapture(
+    output: Annotated[Path, typer.Option("--output")],
+    input_path: Annotated[Path | None, typer.Option("--input", exists=True, dir_okay=False)] = None,
+) -> None:
+    """Write the dormant or failure-triggered A01 plan; never authorize capture."""
+    payload = read_json(input_path) if input_path is not None else None
+    report = plan_recapture(payload)
+    _write_v3_once(output, report)
+    _emit(report)
+
+
+@v3_app.command("capture-template")
+def v3_capture_template(output: Annotated[Path, typer.Option("--output")]) -> None:
+    """Write the strict V01 bidirectional capture-declaration template."""
+    template = controlled_capture_template()
+    _write_v3_once(output, template)
+    _emit(template)
+
+
+@v3_app.command("single-camera-capture-template")
+def v3_single_camera_capture_template(
+    output: Annotated[Path, typer.Option("--output")],
+    cue_detection: Annotated[
+        Path | None,
+        typer.Option("--cue-detection", exists=True, dir_okay=False),
+    ] = None,
+) -> None:
+    """Write the V01 single-camera evidence-consistent capture template."""
+    template = controlled_single_camera_capture_template(cue_detection)
+    _write_v3_once(output, template)
+    _emit(template)
+
+
+@v3_app.command("create-controlled-capture-cues")
+def v3_create_controlled_capture_cues(
+    output_root: Annotated[Path, typer.Option("--output-root")],
+) -> None:
+    """Create deterministic visual/audio cues for both controlled turns."""
+    try:
+        relative_output = output_root.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("V01 cue output must be inside the project") from exc
+    if len(relative_output.parts) < 5 or relative_output.parts[:3] != (
+        "outputs",
+        "post_v3",
+        CONTROLLED_CAPTURE_EXPERIMENT_ID,
+    ):
+        raise typer.BadParameter(
+            "V01 cue output must be outputs/post_v3/"
+            f"{CONTROLLED_CAPTURE_EXPERIMENT_ID}/<run-id>/<artifact-root>"
+        )
+    manifest_path = create_controlled_capture_cue_kit(output_root)
+    _emit(read_json(manifest_path))
+
+
+@v3_app.command("detect-controlled-capture-cues")
+def v3_detect_controlled_capture_cues(
+    cue_manifest: Annotated[Path, typer.Option("--cue-manifest", exists=True, dir_okay=False)],
+    clockwise: Annotated[Path, typer.Option("--clockwise", exists=True, dir_okay=False)],
+    counter_clockwise: Annotated[
+        Path, typer.Option("--counter-clockwise", exists=True, dir_okay=False)
+    ],
+    output: Annotated[Path, typer.Option("--output")],
+    evaluator: Annotated[
+        Path | None,
+        typer.Option("--evaluator", exists=True, dir_okay=False),
+    ] = None,
+) -> None:
+    """Recover hold timestamps from native audio without decoding video pixels."""
+    report_path = detect_controlled_capture_cues(
+        cue_manifest_path=cue_manifest,
+        clockwise_path=clockwise,
+        counter_clockwise_path=counter_clockwise,
+        evaluator_path=evaluator,
+        output_path=output,
+    )
+    _emit(read_json(report_path))
+
+
+@v3_app.command("capture-calibration-templates")
+def v3_capture_calibration_templates(
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Write metric training/stereo calibration templates for V01 declaration v2."""
+    templates = controlled_calibration_templates()
+    _write_v3_once(output, templates)
+    _emit(templates)
+
+
+@v3_app.command("create-controlled-calibration-board")
+def v3_create_controlled_calibration_board(
+    output_root: Annotated[Path, typer.Option("--output-root")],
+) -> None:
+    """Create the frozen metric ChArUco board used by V01 camera calibration."""
+    try:
+        relative_output = output_root.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("V01 board output must be inside the project") from exc
+    if len(relative_output.parts) < 5 or relative_output.parts[:3] != (
+        "outputs",
+        "post_v3",
+        CONTROLLED_CAPTURE_EXPERIMENT_ID,
+    ):
+        raise typer.BadParameter(
+            "V01 board output must be outputs/post_v3/"
+            f"{CONTROLLED_CAPTURE_EXPERIMENT_ID}/<run-id>/<artifact-root>"
+        )
+    spec_path = create_controlled_charuco_board(output_root)
+    _emit(read_json(spec_path))
+
+
+@v3_app.command("capture-calibration-session-template")
+def v3_capture_calibration_session_template(
+    board_spec: Annotated[Path, typer.Option("--board-spec", exists=True, dir_okay=False)],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Write the image-pair and synchronization manifest for V01 calibration."""
+    template = controlled_calibration_session_template(board_spec)
+    _write_v3_once(output, template)
+    _emit(template)
+
+
+@v3_app.command("capture-training-calibration-session-template")
+def v3_capture_training_calibration_session_template(
+    board_spec: Annotated[Path, typer.Option("--board-spec", exists=True, dir_okay=False)],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Write the single-camera image manifest for V01 metric calibration."""
+    template = controlled_training_calibration_session_template(board_spec)
+    _write_v3_once(output, template)
+    _emit(template)
+
+
+@v3_app.command("calibrate-controlled-cameras")
+def v3_calibrate_controlled_cameras(
+    session: Annotated[Path, typer.Option("--session", exists=True, dir_okay=False)],
+    output_root: Annotated[Path, typer.Option("--output-root")],
+) -> None:
+    """Generate measured V01 training and evaluator calibration from ChArUco views."""
+    try:
+        relative_output = output_root.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("V01 calibration output must be inside the project") from exc
+    if len(relative_output.parts) < 5 or relative_output.parts[:3] != (
+        "outputs",
+        "post_v3",
+        CONTROLLED_CAPTURE_EXPERIMENT_ID,
+    ):
+        raise typer.BadParameter(
+            "V01 calibration output must be outputs/post_v3/"
+            f"{CONTROLLED_CAPTURE_EXPERIMENT_ID}/<run-id>/<artifact-root>"
+        )
+    report_path = calibrate_controlled_cameras(session, output_root)
+    _emit(read_json(report_path))
+
+
+@v3_app.command("calibrate-controlled-training-camera")
+def v3_calibrate_controlled_training_camera(
+    session: Annotated[Path, typer.Option("--session", exists=True, dir_okay=False)],
+    output_root: Annotated[Path, typer.Option("--output-root")],
+) -> None:
+    """Generate measured V01 training-camera calibration without an evaluator."""
+    try:
+        relative_output = output_root.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("V01 calibration output must be inside the project") from exc
+    if len(relative_output.parts) < 5 or relative_output.parts[:3] != (
+        "outputs",
+        "post_v3",
+        CONTROLLED_CAPTURE_EXPERIMENT_ID,
+    ):
+        raise typer.BadParameter(
+            "V01 calibration output must be outputs/post_v3/"
+            f"{CONTROLLED_CAPTURE_EXPERIMENT_ID}/<run-id>/<artifact-root>"
+        )
+    report_path = calibrate_controlled_training_camera(session, output_root)
+    _emit(read_json(report_path))
+
+
+@v3_app.command("guided-calibration-capture")
+def v3_guided_calibration_capture(
+    board_spec: Annotated[Path, typer.Option("--board-spec", exists=True, dir_okay=False)],
+    output_root: Annotated[Path, typer.Option("--output-root")],
+    live: Annotated[
+        bool, typer.Option("--live", help="Explicitly authorize live camera use.")
+    ] = False,
+    camera_index: Annotated[int, typer.Option("--camera-index", min=0)] = 0,
+    width: Annotated[int, typer.Option("--width", min=640)] = 1920,
+    height: Annotated[int, typer.Option("--height", min=480)] = 1080,
+    fps: Annotated[float, typer.Option("--fps", min=1.0, max=120.0)] = 30.0,
+) -> None:
+    """Collect calibration stills with a mirrored live preview and visual auto-gates."""
+    if not live:
+        raise typer.BadParameter("guided calibration requires the explicit --live camera flag")
+    try:
+        relative_output = output_root.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("guided calibration output must be inside the project") from exc
+    required_prefix = ("data", "private", "postv3_v01", "calibration", "training")
+    if len(relative_output.parts) < 6 or relative_output.parts[:5] != required_prefix:
+        raise typer.BadParameter(
+            "guided calibration output must be data/private/postv3_v01/"
+            "calibration/training/<session-id>"
+        )
+    manifest_path = run_guided_calibration_capture(
+        board_spec_path=board_spec,
+        output_root=output_root,
+        camera_index=camera_index,
+        width=width,
+        height=height,
+        fps=fps,
+    )
+    _emit(read_json(manifest_path))
+
+
+@v3_app.command("create-guided-display-board")
+def v3_create_guided_display_board(
+    board_spec: Annotated[Path, typer.Option("--board-spec", exists=True, dir_okay=False)],
+    output_root: Annotated[Path, typer.Option("--output-root")],
+) -> None:
+    """Create an offline phone board that locks orientation before scale measurement."""
+    try:
+        relative_output = output_root.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("guided display-board output must be inside the project") from exc
+    if len(relative_output.parts) < 5 or relative_output.parts[:3] != (
+        "outputs",
+        "post_v3",
+        CONTROLLED_CAPTURE_EXPERIMENT_ID,
+    ):
+        raise typer.BadParameter(
+            "guided display-board output must be outputs/post_v3/"
+            f"{CONTROLLED_CAPTURE_EXPERIMENT_ID}/<run-id>/<artifact-root>"
+        )
+    manifest_path = create_guided_display_board_kit(board_spec, output_root)
+    _emit(read_json(manifest_path))
+
+
+@v3_app.command("preview-training-camera")
+def v3_preview_training_camera(
+    live: Annotated[
+        bool, typer.Option("--live", help="Explicitly authorize live camera use.")
+    ] = False,
+    camera_index: Annotated[int, typer.Option("--camera-index", min=0)] = 0,
+    width: Annotated[int, typer.Option("--width", min=640)] = 1920,
+    height: Annotated[int, typer.Option("--height", min=480)] = 1080,
+    fps: Annotated[float, typer.Option("--fps", min=1.0, max=120.0)] = 30.0,
+    framing: Annotated[
+        Literal["full_body", "upper_garment_complete"], typer.Option("--framing")
+    ] = "upper_garment_complete",
+) -> None:
+    """Show a zero-save mirrored framing preview; Q or Escape closes it."""
+    if not live:
+        raise typer.BadParameter("camera preview requires the explicit --live camera flag")
+    run_training_camera_preview(
+        camera_index=camera_index,
+        width=width,
+        height=height,
+        fps=fps,
+        framing=framing,
+    )
+
+
+@v3_app.command("guided-rotation-capture")
+def v3_guided_rotation_capture(
+    output_root: Annotated[Path, typer.Option("--output-root")],
+    direction: Annotated[Literal["clockwise", "counter_clockwise"], typer.Option("--direction")],
+    live: Annotated[
+        bool, typer.Option("--live", help="Explicitly authorize live camera use and recording.")
+    ] = False,
+    camera_index: Annotated[int, typer.Option("--camera-index", min=0)] = 0,
+    width: Annotated[int, typer.Option("--width", min=640)] = 1920,
+    height: Annotated[int, typer.Option("--height", min=480)] = 1080,
+    fps: Annotated[float, typer.Option("--fps", min=1.0, max=120.0)] = 30.0,
+    framing: Annotated[
+        Literal["full_body", "upper_garment_complete"], typer.Option("--framing")
+    ] = "upper_garment_complete",
+) -> None:
+    """Show continuous live view while recording one raw FFV1 rotation clip."""
+    if not live:
+        raise typer.BadParameter("guided rotation requires the explicit --live recording flag")
+    try:
+        relative_output = output_root.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("guided rotation output must be inside the project") from exc
+    required_prefix = ("data", "private", "postv3_v01", "training_camera")
+    if len(relative_output.parts) < 5 or relative_output.parts[:4] != required_prefix:
+        raise typer.BadParameter(
+            "guided rotation output must be data/private/postv3_v01/training_camera/<session-id>"
+        )
+    manifest_path = run_guided_rotation_capture(
+        output_root=output_root,
+        direction=direction,
+        camera_index=camera_index,
+        width=width,
+        height=height,
+        fps=fps,
+        framing=framing,
+    )
+    _emit(read_json(manifest_path))
+
+
+@v3_app.command("guided-rotation-rehearsal")
+def v3_guided_rotation_rehearsal(
+    direction: Annotated[Literal["clockwise", "counter_clockwise"], typer.Option("--direction")],
+    live: Annotated[
+        bool, typer.Option("--live", help="Explicitly authorize the zero-save camera rehearsal.")
+    ] = False,
+    camera_index: Annotated[int, typer.Option("--camera-index", min=0)] = 0,
+    width: Annotated[int, typer.Option("--width", min=640)] = 1920,
+    height: Annotated[int, typer.Option("--height", min=480)] = 1080,
+    fps: Annotated[float, typer.Option("--fps", min=1.0, max=120.0)] = 30.0,
+    framing: Annotated[
+        Literal["full_body", "upper_garment_complete"], typer.Option("--framing")
+    ] = "upper_garment_complete",
+) -> None:
+    """Practice four slow stop-and-turn steps with live view and no recording."""
+    if not live:
+        raise typer.BadParameter("guided rehearsal requires the explicit --live camera flag")
+    run_guided_rotation_rehearsal(
+        direction=direction,
+        camera_index=camera_index,
+        width=width,
+        height=height,
+        fps=fps,
+        framing=framing,
+    )
+
+
+@v3_app.command("register-method-case")
+def v3_register_method_case(
+    source_manifest: Annotated[Path, typer.Option("--source-manifest", exists=True)],
+    content_audit: Annotated[Path, typer.Option("--content-audit", exists=True)],
+    output: Annotated[Path, typer.Option("--output")],
+    owner_confirmed: Annotated[
+        bool,
+        typer.Option(
+            "--owner-confirmed",
+            help="Record explicit confirmation that this is an isolated method case.",
+        ),
+    ] = False,
+) -> None:
+    """Register one controlled method case without sharing cross-person evidence."""
+    contract = register_controlled_method_case(
+        source_manifest_path=source_manifest,
+        content_audit_path=content_audit,
+        owner_confirmed=owner_confirmed,
+    )
+    _write_v3_once(output, contract.model_dump(mode="json"))
+    _emit(contract.model_dump(mode="json"))
+
+
+@v3_app.command("audit-method-source")
+def v3_audit_method_source(
+    method_case_contract: Annotated[
+        Path, typer.Option("--method-case-contract", exists=True, dir_okay=False)
+    ],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Audit proposed cycles for one instance-isolated method case."""
+    report = audit_method_case_source_selection(
+        method_case_contract_path=method_case_contract,
+    )
+    _write_v3_once(output, report.model_dump(mode="json"))
+    _emit(report.model_dump(mode="json"))
+    if report.status != "pass_audited_proposal":
+        raise typer.Exit(2)
+
+
+@v3_app.command("align-method-cycles")
+def v3_align_method_cycles(
+    method_case_contract: Annotated[
+        Path, typer.Option("--method-case-contract", exists=True, dir_okay=False)
+    ],
+    m02_report: Annotated[Path, typer.Option("--m02-report", exists=True, dir_okay=False)],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Align frozen stable views without assuming uniform human rotation."""
+    report = audit_nonuniform_cycle_correspondence(
+        method_case_contract_path=method_case_contract,
+        m02_report_path=m02_report,
+    )
+    _write_v3_once(output, report.model_dump(mode="json"))
+    _emit(report.model_dump(mode="json"))
+    if report.status != "pass_audited_phase_proposal":
+        raise typer.Exit(2)
+
+
+@v3_app.command("audit-localized-rotation")
+def v3_audit_localized_rotation(
+    method_case_contract: Annotated[
+        Path, typer.Option("--method-case-contract", exists=True, dir_okay=False)
+    ],
+    m02_report: Annotated[Path, typer.Option("--m02-report", exists=True, dir_okay=False)],
+    m03_report: Annotated[Path, typer.Option("--m03-report", exists=True, dir_okay=False)],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Audit localized partial phase support without completing missing views."""
+    report = audit_localized_rotation_observability(
+        method_case_contract_path=method_case_contract,
+        m02_report_path=m02_report,
+        m03_report_path=m03_report,
+    )
+    _write_v3_once(output, report.model_dump(mode="json"))
+    _emit(report.model_dump(mode="json"))
+    if report.status != "pass_partial_support_only":
+        raise typer.Exit(2)
+
+
+@v3_app.command("validate-capture-declaration")
+def v3_validate_capture_declaration(
+    declaration: Annotated[Path, typer.Option("--declaration", exists=True, dir_okay=False)],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Validate V01 capture controls and role separation before recording."""
+    report = validate_controlled_capture_declaration(read_json(declaration))
+    _write_v3_once(output, report)
+    _emit(report)
+    if report["status"] != "ready_for_physical_capture":
+        raise typer.Exit(2)
+
+
+@v3_app.command("audit-capture-sources")
+def v3_audit_capture_sources(
+    declaration: Annotated[Path, typer.Option("--declaration", exists=True, dir_okay=False)],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Audit captured native files without exposing evaluator frames to fitting."""
+    report = audit_controlled_capture_sources(declaration)
+    _write_v3_once(output, report)
+    _emit(report)
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("build-controlled-evidence-master")
+def v3_build_controlled_evidence_master(
+    declaration: Annotated[Path, typer.Option("--declaration", exists=True, dir_okay=False)],
+    output_root: Annotated[Path, typer.Option("--output-root")],
+    source_revision: Annotated[str, typer.Option("--source-revision")],
+    storage: Annotated[Literal["png", "hashes_only"], typer.Option("--storage")] = "hashes_only",
+) -> None:
+    """Build one immutable V01 master from physically captured native clips."""
+    try:
+        relative_output = output_root.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("V01 output must be inside the current project") from exc
+    if (
+        len(relative_output.parts) < 5
+        or relative_output.parts[:2] != ("outputs", "post_v3")
+        or relative_output.parts[2] != CONTROLLED_CAPTURE_EXPERIMENT_ID
+    ):
+        raise typer.BadParameter(
+            "V01 output must be outputs/post_v3/"
+            f"{CONTROLLED_CAPTURE_EXPERIMENT_ID}/<run-id>/<artifact-root>"
+        )
+    manifest_path = build_controlled_capture_evidence_master(
+        declaration,
+        output_root,
+        source_revision=source_revision,
+        storage=storage,
+    )
+    report = read_json(manifest_path)
+    _emit(
+        {
+            "status": report["status"],
+            "experiment_id": report["experiment_id"],
+            "capture_id": report["capture_id"],
+            "evidence_master": str(manifest_path),
+            "qualification": str(manifest_path.parent / "qualification.json"),
+            "training_record_count": report["training_record_count"],
+            "blockers": report["blockers"],
+        }
+    )
+    if report["status"] != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("prepare-controlled-chart-requests")
+def v3_prepare_controlled_chart_requests(
+    v01_master: Annotated[Path, typer.Option("--v01-master", exists=True, dir_okay=False)],
+    v01_qualification: Annotated[
+        Path, typer.Option("--v01-qualification", exists=True, dir_okay=False)
+    ],
+    semantic_manifest: Annotated[
+        Path, typer.Option("--semantic-manifest", exists=True, dir_okay=False)
+    ],
+    tracker_source_audit: Annotated[
+        Path, typer.Option("--tracker-source-audit", exists=True, dir_okay=False)
+    ],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Bind the 72 V01 midpoint anchors into immutable Q05 tracker requests."""
+    try:
+        relative_output = output.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("Q05 request output must be inside the current project") from exc
+    if len(relative_output.parts) < 5 or relative_output.parts[:3] != (
+        "outputs",
+        "post_v3",
+        "postv3_q05_controlled_material_chart_graph_r01",
+    ):
+        raise typer.BadParameter(
+            "Q05 request output must be outputs/post_v3/"
+            "postv3_q05_controlled_material_chart_graph_r01/<run-id>/<file>"
+        )
+    report_path = prepare_controlled_chart_requests(
+        v01_master_path=v01_master,
+        v01_qualification_path=v01_qualification,
+        semantic_manifest_path=semantic_manifest,
+        tracker_source_audit_path=tracker_source_audit,
+        output_path=output,
+    )
+    _emit(read_json(report_path))
+
+
+@v3_app.command("bind-controlled-semantics")
+def v3_bind_controlled_semantics(
+    v01_master: Annotated[Path, typer.Option("--v01-master", exists=True, dir_okay=False)],
+    primary_extraction: Annotated[
+        Path, typer.Option("--primary-extraction", exists=True, dir_okay=False)
+    ],
+    replay_extraction: Annotated[
+        Path, typer.Option("--replay-extraction", exists=True, dir_okay=False)
+    ],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Bind two exact same-device controlled Sapiens2 extraction passes."""
+    try:
+        relative_output = output.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("Q05 semantic output must be inside the project") from exc
+    if len(relative_output.parts) < 5 or relative_output.parts[:3] != (
+        "outputs",
+        "post_v3",
+        "postv3_q05_controlled_material_chart_graph_r01",
+    ):
+        raise typer.BadParameter(
+            "Q05 semantic output must be outputs/post_v3/"
+            "postv3_q05_controlled_material_chart_graph_r01/<run-id>/<file>"
+        )
+    manifest_path = bind_controlled_semantic_replays(
+        v01_master_path=v01_master,
+        primary_extraction_path=primary_extraction,
+        replay_extraction_path=replay_extraction,
+        output_path=output,
+    )
+    _emit(read_json(manifest_path))
+
+
+@v3_app.command("materialize-controlled-chart-seeds")
+def v3_materialize_controlled_chart_seeds(
+    request_manifest: Annotated[
+        Path, typer.Option("--request-manifest", exists=True, dir_okay=False)
+    ],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Freeze deterministic Q05 semantic seed pixels before tracker execution."""
+    try:
+        relative_output = output.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("Q05 seed output must be inside the current project") from exc
+    if len(relative_output.parts) < 5 or relative_output.parts[:3] != (
+        "outputs",
+        "post_v3",
+        "postv3_q05_controlled_material_chart_graph_r01",
+    ):
+        raise typer.BadParameter(
+            "Q05 seed output must be outputs/post_v3/"
+            "postv3_q05_controlled_material_chart_graph_r01/<run-id>/<file>"
+        )
+    report_path = materialize_controlled_chart_seeds(
+        request_manifest_path=request_manifest,
+        output_path=output,
+    )
+    _emit(read_json(report_path))
+
+
+@v3_app.command("validate-controlled-tracker-output")
+def v3_validate_controlled_tracker_output(
+    request_manifest: Annotated[
+        Path, typer.Option("--request-manifest", exists=True, dir_okay=False)
+    ],
+    seed_manifest: Annotated[Path, typer.Option("--seed-manifest", exists=True, dir_okay=False)],
+    bundle: Annotated[Path, typer.Option("--bundle", exists=True, dir_okay=False)],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Audit one Q05 tracker bundle and its byte-identical replay."""
+    try:
+        relative_output = output.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("Q05 validation output must be inside the project") from exc
+    if len(relative_output.parts) < 5 or relative_output.parts[:3] != (
+        "outputs",
+        "post_v3",
+        "postv3_q05_controlled_material_chart_graph_r01",
+    ):
+        raise typer.BadParameter(
+            "Q05 validation output must be outputs/post_v3/"
+            "postv3_q05_controlled_material_chart_graph_r01/<run-id>/<file>"
+        )
+    report_path = validate_controlled_tracker_output_bundle(
+        request_manifest_path=request_manifest,
+        seed_manifest_path=seed_manifest,
+        bundle_path=bundle,
+        output_path=output,
+    )
+    _emit(read_json(report_path))
+
+
+@v3_app.command("run-controlled-tracker")
+def v3_run_controlled_tracker(
+    request_manifest: Annotated[
+        Path, typer.Option("--request-manifest", exists=True, dir_okay=False)
+    ],
+    seed_manifest: Annotated[Path, typer.Option("--seed-manifest", exists=True, dir_okay=False)],
+    calibration_report: Annotated[
+        Path, typer.Option("--calibration-report", exists=True, dir_okay=False)
+    ],
+    source: Annotated[Literal["lk", "tapir", "cotracker3"], typer.Option("--source")],
+    output_root: Annotated[Path, typer.Option("--output-root")],
+    source_root: Annotated[
+        Path | None, typer.Option("--source-root", exists=True, file_okay=False)
+    ] = None,
+    checkpoint: Annotated[
+        Path | None, typer.Option("--checkpoint", exists=True, dir_okay=False)
+    ] = None,
+    device: Annotated[str, typer.Option("--device")] = "cpu",
+) -> None:
+    """Run one controlled tracker twice and emit an immutable proposal bundle."""
+    try:
+        relative_output = output_root.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("Q05 tracker output must be inside the project") from exc
+    if len(relative_output.parts) < 5 or relative_output.parts[:3] != (
+        "outputs",
+        "post_v3",
+        "postv3_q05_controlled_material_chart_graph_r01",
+    ):
+        raise typer.BadParameter(
+            "Q05 tracker output must be outputs/post_v3/"
+            "postv3_q05_controlled_material_chart_graph_r01/<run-id>/<artifact-root>"
+        )
+    bundle_path = run_controlled_tracker(
+        request_manifest_path=request_manifest,
+        seed_manifest_path=seed_manifest,
+        calibration_report_path=calibration_report,
+        source=source,
+        output_root=output_root,
+        source_root=source_root,
+        checkpoint_path=checkpoint,
+        device_name=device,
+    )
+    bundle = read_json(bundle_path)
+    _emit(
+        {
+            "status": "complete",
+            "source": bundle["source"],
+            "bundle": str(bundle_path),
+            "primary_sha256": bundle["primary_payload"]["sha256"],
+            "replay_sha256": bundle["replay_payload"]["sha256"],
+            "exact_same_device_replay": bundle["exact_same_device_replay"],
+            "material_truth_write_access": bundle["material_truth_write_access"],
+        }
+    )
+
+
+@v3_app.command("build-controlled-charts")
+def v3_build_controlled_charts(
+    request_manifest: Annotated[
+        Path, typer.Option("--request-manifest", exists=True, dir_okay=False)
+    ],
+    seed_manifest: Annotated[Path, typer.Option("--seed-manifest", exists=True, dir_okay=False)],
+    lk_bundle: Annotated[Path, typer.Option("--lk-bundle", exists=True, dir_okay=False)],
+    tapir_bundle: Annotated[Path, typer.Option("--tapir-bundle", exists=True, dir_okay=False)],
+    cotracker_bundle: Annotated[
+        Path, typer.Option("--cotracker-bundle", exists=True, dir_okay=False)
+    ],
+    lk_validation: Annotated[Path, typer.Option("--lk-validation", exists=True, dir_okay=False)],
+    tapir_validation: Annotated[
+        Path, typer.Option("--tapir-validation", exists=True, dir_okay=False)
+    ],
+    cotracker_validation: Annotated[
+        Path, typer.Option("--cotracker-validation", exists=True, dir_okay=False)
+    ],
+    public_robustness: Annotated[
+        Path, typer.Option("--public-robustness", exists=True, dir_okay=False)
+    ],
+    output: Annotated[Path, typer.Option("--output")],
+) -> None:
+    """Assemble validated three-source outputs into the controlled Q05 graph."""
+    try:
+        relative_output = output.resolve().relative_to(Path.cwd().resolve())
+    except ValueError as exc:
+        raise typer.BadParameter("Q05 graph output must be inside the project") from exc
+    if len(relative_output.parts) < 5 or relative_output.parts[:3] != (
+        "outputs",
+        "post_v3",
+        "postv3_q05_controlled_material_chart_graph_r01",
+    ):
+        raise typer.BadParameter(
+            "Q05 graph output must be outputs/post_v3/"
+            "postv3_q05_controlled_material_chart_graph_r01/<run-id>/<file>"
+        )
+    graph = build_controlled_material_chart_graph(
+        request_manifest_path=request_manifest,
+        seed_manifest_path=seed_manifest,
+        bundle_paths=[lk_bundle, tapir_bundle, cotracker_bundle],
+        validation_paths=[lk_validation, tapir_validation, cotracker_validation],
+        public_robustness_path=public_robustness,
+    )
+    _write_v3_once(output, graph)
+    _emit(graph)
+    if graph.status != "pass":
+        raise typer.Exit(2)
+
+
+@v3_app.command("build-regional-diagnostics")
+def v3_build_regional_diagnostics(
+    output: Annotated[Path, typer.Option("--output")],
+    output_image: Annotated[Path, typer.Option("--output-image")],
+    t05_solution: Annotated[Path, typer.Option("--t05-solution", exists=True, dir_okay=False)],
+    v00_master: Annotated[Path, typer.Option("--v00-master", exists=True, dir_okay=False)],
+    q04_graph: Annotated[Path, typer.Option("--q04-graph", exists=True, dir_okay=False)],
+    dataset_root: Annotated[Path, typer.Option("--dataset-root", exists=True, file_okay=False)],
+    comparison_video: Annotated[
+        Path, typer.Option("--comparison-video", exists=True, dir_okay=False)
+    ],
+) -> None:
+    """Freeze the train-only 12-phase geometry-failure storyboard."""
+    report = build_regional_geometry_failure_atlas(
+        t05_solution_path=t05_solution,
+        v00_master_path=v00_master,
+        q04_graph_path=q04_graph,
+        dataset_root=dataset_root,
+        comparison_video_path=comparison_video,
+        output_image_path=output_image,
+    )
+    _write_v3_once(output, report)
+    _emit(report)
+
+
+@v3_app.command("report-dry-run")
+def v3_report_dry_run(
+    output: Annotated[Path, typer.Option("--output")] = Path(
+        "outputs/post_v3/postv3_h03_material_atlas_joint_inverse_capture_r01/"
+        "registered-20260903-r01/qualification/report_dry_run.json"
+    ),
+) -> None:
+    """Validate V3 report topology without claiming a reconstruction."""
+    report = report_dry_run()
+    _write_v3_once(output, report)
+    _emit(report)
 
 
 if __name__ == "__main__":

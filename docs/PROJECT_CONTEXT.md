@@ -1,6 +1,6 @@
 # FrayID project context
 
-Status: public technical overview; D03 terminal; L03 local qualification passed, CUDA pending
+Status: public technical overview; reproduction-first unified outer-surface track restored
 Scope: canonical clothed-surface geometry V1  
 Privacy: no source media, body data, artifacts, or private identifiers
 
@@ -24,6 +24,13 @@ V1 recovers geometry only. Its accepted output is a canonical signed-distance
 field (SDF) and a topology-safe explicit extraction used for rendering and
 validation.
 
+The current primary target retains that original V1 meaning: a SelfRecon-style
+unified outer surface with skeletal and bounded residual non-rigid deformation.
+It does not require separated garment meshes, explicit neckline/cuff/hem loops,
+material coordinates, contact state, rest metric, or cloth strain. Those may be
+regional diagnostics or separately qualified later research; they do not block
+the reference reproduction.
+
 V1 intentionally excludes:
 
 - RGB appearance, texture, relighting, and material recovery;
@@ -35,6 +42,10 @@ V1 intentionally excludes:
 The project is research-only. Upstream models, research implementations, and
 possible patents have separate terms that require independent review before
 commercial use.
+
+For method development, a bare-torso regional capture may test camera, phase,
+pose, SDF, and deformation plumbing, but it cannot support a clothed-surface or
+garment claim. A close-fitting top is the first staged clothed case.
 
 ## Responsibility boundaries
 

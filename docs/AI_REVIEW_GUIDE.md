@@ -7,6 +7,17 @@ with proxies.
 
 ## Current decision boundary
 
+The active project direction is reproduction-first. Review one unified
+SelfRecon-style canonical outer surface before proposing explicit open-garment
+topology, material atlases, contact, or cloth physics. The later MANTLE work is
+historical/deferred and must not block the outer-surface baseline. Garment
+curves remain useful regional metrics, not mandatory primary variables.
+
+The staged capture ladder uses bare torso only for camera/phase/pose/SDF
+engineering, a close-fitting top for the first clothed case, and loose clothing
+as a later stress test. Do not interpret a bare-torso fixture as garment
+evidence.
+
 V1 is complete and immutable. A separately versioned original-reference
 topology correction passed the unchanged development gates without reopening
 the sealed test. P0/P2/P5 passed. E1-E17/E19-E21/B1 and

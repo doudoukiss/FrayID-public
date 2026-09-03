@@ -732,3 +732,21 @@ parameter groups, change both, preserve bounded outward motion and fixed
 connectivity, and restore exactly. No development record, sealed record,
 scientific marker, or paid worker was used. The only eligible next execution is
 one separately capped, zero-retry L40S engineering qualification.
+
+## Reproduction-first project correction
+
+The project owner restored the original unified outer-surface objective as the
+primary track. The reference-class result is one canonical implicit surface
+with skeletal and residual non-rigid deformation, not a separated garment or
+cloth-physics solution. Explicit garment boundaries, a material atlas, rest
+metric, contact ownership, and strain are deferred optional research.
+
+All earlier V1/V2/V3 and external-baseline outcomes remain historical facts.
+The correction does not retroactively pass a failed experiment or erase a stop
+decision. A new official/reference reproduction requires a separately governed
+runtime and contract, followed by an isolated project-video adapter and only
+then a project outer-surface fit.
+
+New capture is staged: bare torso may validate camera, phase, pose, SDF,
+deformation, and replay; a close-fitting top is the first clothed case; loose
+clothing is a later stress test. Bare torso is never garment evidence.

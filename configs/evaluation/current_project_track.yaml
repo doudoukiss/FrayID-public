@@ -1,0 +1,27 @@
+schema_version: frayid_public_project_track.v1
+as_of_date: 2026-09-03
+primary_target: selfrecon_style_unified_canonical_outer_surface
+representation:
+  canonical_geometry: implicit_sdf
+  per_frame_motion:
+    - skeletal_deformation
+    - bounded_residual_non_rigid_deformation
+primary_track:
+  - official_reference_public_reproduction
+  - isolated_project_video_adapter
+  - project_unified_outer_surface_fit
+  - held_out_geometry_topology_and_replay_evaluation
+deferred_research:
+  - explicit_open_garment_topology
+  - material_atlas
+  - contact_and_rest_metric
+  - physical_cloth_strain
+capture_ladder:
+  stage_0: bare_torso_camera_phase_pose_sdf_engineering_only
+  stage_1: close_fitting_top_clothed_outer_surface
+  stage_2: loose_or_open_clothing_stress_test
+claim_boundaries:
+  bare_torso_is_garment_evidence: false
+  unified_shell_is_separated_garment: false
+  explicit_garment_state_required_for_primary_promotion: false
+privacy: no_human_media_body_data_or_private_provenance_in_public_repository

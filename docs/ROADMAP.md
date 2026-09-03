@@ -487,3 +487,33 @@ qualification with a recorded provider rate, 15-minute wall-time ceiling,
 Passing that gate would still not authorize science. A scientific schedule,
 matched control, development endpoint, contact/penetration audit, and stop
 conditions must be separately frozen before optimizer step one.
+
+## Accepted reproduction-first roadmap
+
+The project now prioritizes the original SelfRecon-style unified outer-surface
+target. The corrected order is:
+
+1. reproduce the official/reference public example in an isolated and audited
+   runtime, preserving its documented mechanism and schedule;
+2. build an isolated adapter from project evidence into that input contract;
+3. fit and evaluate one canonical outer SDF on the project video using held-out
+   silhouette, boundary, normal, topology, replay, and provenance gates;
+4. consider explicit open-garment or material-state reconstruction only after
+   the unified surface succeeds.
+
+Earlier SelfRecon operational attempts remain closed under their IDs. A new
+reference reproduction must use a newly registered, materially different
+runtime artifact and cannot be disguised as an old retry. No pretrained output,
+short schedule, proxy input, held-out fitting, or file-existence success is
+allowed.
+
+Garment necklines, cuffs or armholes, hems, gaps, and folds are regional
+diagnostics for the primary track. Four physical loops, material coordinates,
+rest metric, contact, and strain are not primary promotion requirements. A
+unified shell must not be claimed as a separated garment.
+
+The capture ladder begins with an optional bare-torso regional engineering case,
+then a close-fitting clothed case, then loose clothing. Each person/video is
+isolated, and a regional or bare-torso result cannot qualify a full clothed-human
+endpoint. The deferred MANTLE route may resume only after outer-surface
+promotion and a separately accepted contract.

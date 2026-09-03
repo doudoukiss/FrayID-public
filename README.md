@@ -20,12 +20,32 @@ Read these documents in order when reviewing or continuing the project:
    concise reading order, source map, and decision boundary.
 4. [`configs/evaluation/post_v1_experiments.yaml`](configs/evaluation/post_v1_experiments.yaml)
    provides the E0-E26, B1-B5, and P0-P11 state in machine-readable form.
-5. [`docs/ROADMAP.md`](docs/ROADMAP.md) separates completed work from possible
+5. [`configs/evaluation/current_project_track.yaml`](configs/evaluation/current_project_track.yaml)
+   records the corrected reproduction-first target and claim boundaries.
+6. [`docs/ROADMAP.md`](docs/ROADMAP.md) separates completed work from possible
    post-V1 research.
 
 Together with the source and tests, these files are intended to provide enough
 context for a web-based code reviewer or AI assistant to understand the project
 without access to private data.
+
+## Current reproduction-first direction
+
+The primary track is now an official/reference SelfRecon-style reproduction:
+one unified canonical implicit outer surface, deformed into the observed frames
+by skeletal motion plus bounded residual non-rigid motion. This is the same
+class of target as the original V1 contract. It does not require skin, shirts,
+trousers, and hair to be reconstructed as separate physical objects.
+
+Later work correctly exposed limitations of radial clothing shells, but then
+made explicit garment curves, material coordinates, contact, rest metric, and
+strain prerequisites for all progress. That stronger MANTLE target is preserved
+as deferred optional research. It no longer blocks reproducing and evaluating
+the unified outer surface.
+
+New capture uses a staged ladder: bare torso for camera/phase/pose/SDF plumbing,
+a close-fitting top for the first clothed outer-surface test, and loose clothing
+as a later stress test. A bare-torso result is never garment evidence.
 
 ## Pipeline
 
