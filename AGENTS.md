@@ -22,6 +22,11 @@ primary representation is an implicit SDF with skeletal and bounded residual
 non-rigid deformation. Explicit open-garment topology and cloth physics are
 deferred research, not prerequisites for this result.
 
+Current execution state: R01 is registered and its local public-source/data
+binding passed, but no runtime or experiment is active. A separately authorized
+private build must produce a new content-addressed runtime artifact before
+runtime import or device qualification. Capture remains unauthorized.
+
 ## Boundaries
 
 - V1 is geometry-only: do not add measurement, garment, avatar, texture, 3DGS,

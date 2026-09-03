@@ -1,13 +1,14 @@
 # FrayID public roadmap
 
-Status: reproduction-first correction accepted; R01 planning-only; no active execution
+Status: R01 registered; local source/data binding passed; prebuilt runtime artifact missing; no active execution
 V1 geometry: complete and frozen
 
 > **Current decision (2026-09-03):** the primary path is official/reference
 > SelfRecon-style reproduction, then an isolated project-video adapter, then a
 > unified outer-surface fit. Earlier text that calls L03 CUDA or a MANTLE stage
-> the next action is historical and superseded. No capture, CUDA run, paid job,
-> or scientific attempt is currently authorized.
+> the next action is historical and superseded. R01 now requires one separately
+> authorized private build of its frozen content-addressed runtime recipe. No
+> capture, CUDA run, paid job, or scientific attempt is currently authorized.
 
 This roadmap describes possible next research without reopening the accepted
 private test or expanding silently into product features.
@@ -514,6 +515,14 @@ reference reproduction must use a newly registered, materially different
 runtime artifact and cannot be disguised as an old retry. No pretrained output,
 short schedule, proxy input, held-out fitting, or file-existence success is
 allowed.
+
+R01 is registered and its zero-GPU local audit passed the pinned source,
+research-only/patent notice, official archive bindings, licensed SMPL binding,
+and exact 689-frame public RGB/mask/normal alignment. It stopped only because a
+new content-addressed prebuilt runtime manifest is absent. The runtime recipe is
+frozen, but no artifact was built or pushed. Registry selection and one bounded
+external build require an explicit owner decision before runtime import or
+device qualification.
 
 Garment necklines, cuffs or armholes, hems, gaps, and folds are regional
 diagnostics for the primary track. Four physical loops, material coordinates,

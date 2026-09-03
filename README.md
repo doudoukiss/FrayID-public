@@ -47,6 +47,11 @@ New capture uses a staged ladder: bare torso for camera/phase/pose/SDF plumbing,
 a close-fitting top for the first clothed outer-surface test, and loose clothing
 as a later stress test. A bare-torso result is never garment evidence.
 
+R01 is now registered. Its local official-source and public-example binding
+passed, but the required new content-addressed prebuilt runtime does not yet
+exist. No runtime import, GPU worker, training, project-evidence read, or capture
+is active.
+
 ## Pipeline
 
 ```text

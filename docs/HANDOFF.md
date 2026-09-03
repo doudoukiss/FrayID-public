@@ -2,14 +2,15 @@
 
 Status: factual, privacy-safe implementation and experiment record  
 V1 state: closed and accepted  
-Post-V1 state: reproduction-first correction accepted; R01 planning-only; no active execution
+Post-V1 state: R01 registered and local source/data bound; runtime artifact missing; no active execution
 Private artifacts: intentionally unavailable
 
 > **Current decision (2026-09-03):** the project first reproduces the
 > SelfRecon-style unified outer-surface reference path. Earlier chronological
 > statements that call L03 CUDA, Q04, MANTLE, or recapture the next eligible
 > action are historical and superseded. No capture, CUDA run, paid job, or
-> scientific attempt is active.
+> scientific attempt is active. R01 is registered but remains blocked before
+> runtime import because its new content-addressed artifact does not yet exist.
 
 This handoff explains what was done and what should not be repeated. It omits
 media names, media and artifact hashes, cloud application IDs, private volume
@@ -757,3 +758,17 @@ then a project outer-surface fit.
 New capture is staged: bare torso may validate camera, phase, pose, SDF,
 deformation, and replay; a close-fitting top is the first clothed case; loose
 clothing is a later stress test. Bare torso is never garment evidence.
+
+## R01 registration and local binding
+
+R01 is registered with a new prebuilt dual-runtime mechanism. Its zero-GPU
+local audit passed the pinned official source and terms, official public example
+bindings, licensed SMPL binding, and exact 689-frame RGB/mask/normal alignment.
+No private project video, development record, sealed record, download, camera,
+GPU worker, training step, spend, or retry was used.
+
+R01 remains at `built`. Its only blocker is the absence of a new
+content-addressed runtime artifact and manifest. The frozen recipe excludes
+licensed assets and datasets and forbids dynamic Modal layer assembly or B2/B3
+image reuse. No artifact was built or pushed; that requires a separately
+authorized private-registry build before import/device qualification.

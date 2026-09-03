@@ -496,4 +496,13 @@ It is terminal as a clothed result. L03 reuses it only as prior-derived inner-
 body initialization under a new contract. Public layer fixtures, train-only
 semantic coverage, deterministic upper/lower open-layer extraction, registered
 boundaries/contact, zero exact intersections, and one local gradient/update/
-checkpoint step pass. Target-CUDA qualification and science have not run.
+checkpoint step pass. Target-CUDA qualification and science did not run and
+are now frozen historical work under the reproduction-first correction.
+
+The current R01 reference-reproduction contract is registered. Its zero-GPU
+local audit passed the pinned official SelfRecon source and terms, official
+public-example archives, licensed SMPL binding, and exact 689-frame
+RGB/mask/normal alignment. R01 remains `built`, not qualified: the required new
+content-addressed prebuilt runtime artifact and manifest do not yet exist. No
+runtime import, device qualification, training, project-evidence read, or
+capture is active.
