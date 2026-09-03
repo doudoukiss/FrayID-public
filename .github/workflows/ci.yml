@@ -1,0 +1,23 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.11"
+          enable-cache: true
+      - name: Install system test dependencies
+        run: sudo apt-get update && sudo apt-get install --yes ffmpeg
+      - name: Install
+        run: uv sync --extra dev --frozen
+      - name: Verify
+        run: make verify

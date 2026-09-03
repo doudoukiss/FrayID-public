@@ -1,0 +1,130 @@
+schema_version: reconstruction_config.v1
+run_id: local_canonical_clothed_surface_v1
+seed: 42
+paths:
+  asset_manifest: configs/assets/local_media.yaml
+  input_video: data/private/input.mp4
+  reference_video: data/private/qualitative_reference.mp4
+  dataset_root: outputs/canonical_clothed_surface_v1/dataset
+  run_root: outputs/canonical_clothed_surface_v1/runs
+dataset:
+  target_frame_count: 180
+  minimum_usable_frame_count: 120
+  candidate_multiplier: 3
+  held_out_stride: 5
+  minimum_blur_variance: 20.0
+  minimum_mean_luminance: 15.0
+  maximum_mean_luminance: 240.0
+  output_width: 720
+  output_height: 1120
+evidence:
+  masks_subdirectory: masks
+  normals_subdirectory: normals
+  observed_pose_filename: sapiens2_pose_sequence.json
+  raw_initialization_filename: camerahmr_raw_sequence.json
+  initialization_filename: sequence_initialization.json
+  allow_proxy_masks: false
+  allow_constant_normals: false
+  allow_proxy_camera: false
+  allow_zero_pose: false
+initialization_gate:
+  minimum_median_silhouette_iou: 0.75
+  overlay_frame_count: 16
+  maximum_root_rotation_jump_degrees: 45.0
+  shared_focal_required: true
+  shared_shape_required: true
+  observed_pose_minimum_confidence: 0.35
+  envelope_maximum_offset_m: 0.12
+  envelope_smoothness_weight: 5.0
+  envelope_magnitude_weight: 1.0
+pose_refit:
+  steps: 500
+  learning_rate: 0.001
+  silhouette_batch_size: 6
+  render_resolution: 128
+  robust_scale_pixels: 25.0
+  maximum_joint_correction_degrees: 12.0
+  maximum_root_correction_degrees: 5.0
+  maximum_translation_correction_m: 0.05
+  observed_joint_weight: 25.0
+  camerahmr_joint_weight: 2.0
+  joint_3d_anchor_weight: 0.5
+  silhouette_weight: 4.0
+  boundary_weight: 0.5
+  pose_anchor_weight: 0.2
+  root_anchor_weight: 0.5
+  translation_anchor_weight: 1.0
+  rotation_acceleration_weight: 0.2
+  translation_acceleration_weight: 2.0
+model:
+  positional_encoding_frequencies: 6
+  sdf_hidden_dim: 128
+  sdf_layer_count: 4
+  residual_hidden_dim: 128
+  residual_layer_count: 3
+  frame_code_dim: 32
+  eikonal_sample_count: 2048
+  renderer_resolution: 128
+  renderer_sigma_pixels: 1.75
+  renderer_max_vertices: 2048
+  renderer_reference_sample_count: 2048
+  renderer_depth_temperature_m: 0.05
+  canonical_orientation_margin: 0.2
+  canonical_minimum_signed_area_ratio: 0.01
+  canonical_minimum_area_ratio: 0.1
+  canonical_backtracking_steps: 16
+  maximum_root_rotation_correction_degrees: 5.0
+  maximum_root_translation_correction_m: 0.05
+losses:
+  silhouette: 1.0
+  boundary: 0.5
+  normal: 0.25
+  eikonal: 0.1
+  sdf_mesh_consistency: 0.5
+  deformation: 0.5
+  jacobian: 0.05
+  temporal: 0.1
+  canonical_orientation: 1.0
+  canonical_area: 1.0
+  canonical_edge_strain: 0.1
+  canonical_smoothness: 0.05
+  root_rotation_correction: 0.05
+  root_translation_correction: 0.1
+  root_correction_temporal: 0.1
+training:
+  learning_rate: 0.0001
+  checkpoint_every_epochs: 5
+  refresh_mesh_every_epochs: 25
+  stages:
+    - name: coarse
+      start_epoch: 0
+      grid_resolution: 64
+      mask_resolution: 128
+    - name: medium
+      start_epoch: 12
+      grid_resolution: 128
+      mask_resolution: 192
+    - name: fine
+      start_epoch: 60
+      grid_resolution: 256
+      mask_resolution: 192
+  full_epoch_count: 200
+smoke:
+  frame_count: 24
+  epoch_count: 2
+  stage: coarse
+  learning_rate: 0.0002
+  required_loss_reduction_fraction: 0.05
+  gpu: L40S
+  timeout_seconds: 1800
+  automatic_retry_count: 0
+  # This schema records that the project owner may authorize full training;
+  # smoke and manual-run gates still apply before any paid execution.
+  full_training_authorized: true
+evaluation:
+  held_out_silhouette_iou: 0.85
+  minimum_iou_improvement: 0.10
+  maximum_normalized_boundary_error: 0.015
+  maximum_median_normal_error_degrees: 25.0
+  maximum_train_held_out_iou_gap: 0.05
+  minimum_dominant_component_area_fraction: 0.98

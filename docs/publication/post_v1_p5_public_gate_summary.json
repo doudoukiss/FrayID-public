@@ -1,0 +1,21 @@
+{
+  "schema_version": "post_v1_p5_public_summary.v1",
+  "correctness_id": "postv1_p5_normalized_ti_oracle_r01",
+  "status": "passed_public_evaluator_correctness_gate",
+  "query_count": 1024,
+  "passed_query_count": 1024,
+  "normalized_raw_label_disagreements": 0,
+  "normalized_filtered_rejections": 0,
+  "nondeterministic_queries": 0,
+  "absolute_p4_filtered_rejections_reproduced": 82,
+  "elapsed_seconds": 1.5645153750665486,
+  "mesh_fixture_reads": 0,
+  "automatic_retry_count": 0,
+  "private_input_reads": 0,
+  "development_evidence_reads": 0,
+  "image_loads": 0,
+  "optimizer_steps": 0,
+  "modal_invocations": 0,
+  "sealed_test_accesses": 0,
+  "conclusion": "joint-AABB normalization restored scale-invariant Tight-Inclusion decisions on all registered analytic raw and Planar-DAT-filtered paths"
+}

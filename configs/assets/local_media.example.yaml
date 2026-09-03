@@ -1,0 +1,20 @@
+# Copy this file to local_media.yaml and replace every placeholder with values
+# measured from your own local-only media. Never commit the completed manifest.
+schema_version: local_media.v1
+privacy: local_only
+assets:
+  - asset_id: local_reconstruction_input
+    role: reconstruction_input
+    path: data/private/input.mp4
+    sha256: REPLACE_WITH_LOCAL_SHA256
+    expected:
+      codec: REPLACE_WITH_CODEC
+      width: 1
+      height: 1
+      frame_count: 1
+      duration_seconds: 1.0
+    allowed_uses:
+      - dataset_preparation
+      - reconstruction_training
+      - held_out_evaluation
+    tracked_in_git: false

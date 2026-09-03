@@ -1,0 +1,609 @@
+schema: frayid_public_post_v1_summary.v1
+status:
+  v1: immutable_accepted
+  sealed_test_reopened: false
+  roadmap_state: terminal_at_declared_stops
+  active_post_v1_experiment: null
+  independent_operational_workstream: null
+  decision: b1_through_b5_terminal_no_external_candidate_active_keep_e18_e24_e26_blocked
+
+experiments:
+  e0:
+    title: incumbent binding and original-reference correction
+    outcome: passed_as_separate_correction
+    sealed_test_used: false
+    note: corrected carrier passed unchanged development and topology gates
+
+  e1:
+    title: continuous-time motion
+    outcome: closed_at_public_synthetic_gate
+    result:
+      omitted_time_vertex_rmse_relative_change_percent: 2.557
+      direction: regression
+
+  e2:
+    title: feasible cage update direction
+    outcome: closed_at_real_smoke
+    result:
+      synthetic_pooled_normal_improvement_degrees: 2.60
+      real_smoke_qp_converged: false
+    note: public counterexamples later confirmed a defect in the custom active-set solver
+
+  e3:
+    title: carrier-covering exact-distance support
+    outcome: closed_at_local_source_gate
+    result:
+      maximum_field_residual: 0.547991
+      required_maximum_field_residual: 0.5
+      raw_zero_set_components: 17
+      raw_zero_set_euler: -48
+
+  e4:
+    title: certified convex projection
+    outcome: closed_at_paired_real_smoke
+    retained_component: certified_qp_solver
+    result:
+      numerical_random_cases_passed: 1000
+      fixed_regressions_passed: 4
+      synthetic_pooled_normal_improvement_degrees: 2.8967
+      control_objective_reduction_percent: 3.0502
+      treatment_objective_reduction_percent: 4.97937
+      required_objective_reduction_percent: 5.0
+      control_exact_next_step_resume: false
+      treatment_exact_next_step_resume: false
+      treatment_certified_qp_failures: 0
+
+  e5:
+    title: train-only material tracks
+    outcome: closed_at_public_oracle_gate
+    result:
+      retained_tracks: 95
+      retained_observations: 3397
+      canonical_chamfer_improvement_percent: 27.2228
+      posed_motion_improvement_percent: 24.3672
+      pooled_normal_improvement_degrees: 1.43937
+      required_pooled_normal_improvement_degrees: 2.0
+      corrupted_fixture_worse_than_control: true
+      exact_next_step_resume: false
+      private_tracking_started: false
+
+  e6:
+    title: interface-conforming piecewise-linear field
+    outcome: closed_at_accepted_source_audit
+    result:
+      public_valid_fixtures_passed: 10
+      public_negative_fixtures_passed: 6
+      public_sign_samples_checked: 200000
+      public_sign_mismatches: 0
+      conventional_source_topology_passed: true
+      exact_global_self_intersection_passed: false
+      private_field_construction_started: false
+
+  p0:
+    title: exact next-step replay repair
+    outcome: passed_cpu_and_l40s
+    retained_component: canonical_checkpoint_v2
+    result:
+      cpu_bitwise_replay: true
+      l40s_bitwise_replay: true
+      mismatched_rng_cursor_negative_control_failed: true
+
+  e7:
+    title: collision-preserving canonical optimization
+    outcome: closed_at_exact_source_prerequisite
+    result:
+      eligible_exact_embedded_sources: 0
+      geometry_repair_started: false
+      ipc_training_started: false
+      development_evaluations: 0
+
+  e8:
+    title: opaque visibility training
+    outcome: closed_at_paired_real_smoke
+    result:
+      public_known_shape_chamfer_improvement_percent: 94.1104
+      control_objective_reduction_percent: 21.1527
+      treatment_objective_reduction_percent: 5.0490
+      control_exact_next_step_replay: true
+      treatment_exact_next_step_replay: false
+      bounded_comparison_started: false
+      development_evaluations: 0
+
+  e9:
+    title: tracklet-level outlier process
+    outcome: closed_at_public_robustness_gate
+    result:
+      clean_chamfer_improvement_percent: 72.5702
+      clean_motion_improvement_percent: 47.7322
+      clean_pooled_normal_improvement_degrees: 17.3539
+      exact_next_step_replay: true
+      qualifying_lambda_multiplier: null
+      private_tracking_started: false
+      development_evaluations: 0
+
+  e10:
+    title: embedded carrier reconstruction and deformation transfer
+    outcome: closed_at_real_source_exact_topology_gate
+    result:
+      public_parameter_gate_passed: true
+      deterministic_real_source_repeat: true
+      exact_self_intersection_pair_count: 0
+      component_count: 1
+      watertight: true
+      outward_oriented: true
+      euler_number: -4
+      required_euler_number: 2
+      transfer_started: false
+      development_evaluations: 0
+
+  p1:
+    title: opaque renderer deterministic execution
+    outcome: closed_at_l40s_bitwise_geometry_gradient_gate
+    result:
+      cpu_bitwise_forward_repeats: 100
+      first_cpu_tensor_difference: null
+      cuda_available: true
+      cuda_forward_backward_repeats: 100
+      forward_stages_bitwise_equal: true
+      first_cuda_tensor_difference: gradient_geometry
+      first_divergent_repeat_index: 1
+      maximum_absolute_difference: 7.450580596923828e-09
+      checkpoint_v2_next_step_repeats: 4
+      checkpoint_v2_next_step_passed: true
+      renderer_operator_modified: false
+      e8_reopened: false
+
+  e11:
+    title: genus-controlled carrier construction
+    outcome: closed_at_public_geometric_fidelity_gate
+    result:
+      public_fixture_classes: 5
+      deterministic_repetitions_per_fixture: 2
+      all_serializations_bitwise_equal: true
+      exact_self_intersection_pair_count: 0
+      component_count: 1
+      watertight: true
+      outward_oriented: true
+      euler_number: 2
+      modal_public_gate_passed: true
+      public_fidelity_fixture_count: 8
+      public_fidelity_fixture_pass_count: 5
+      deterministic_serialization_all: true
+      independent_exact_topology_all: true
+      sphere_scale_invariance_passed: true
+      ellipsoid_rigid_invariance_passed: true
+      concave_pocket_relative_volume_error: 0.0346793
+      maximum_relative_volume_error: 0.031
+      concave_pocket_feature_p95_distance_pitch: 1.01885
+      maximum_feature_p95_distance_pitch: 1.0
+      hairpin_relative_volume_error: 1.15679
+      hairpin_target_to_source_p95_distance_pitch: 1.03637
+      hairpin_target_to_source_median_normal_degrees: 22.5
+      hairpin_exterior_gap_probes_preserved: 0
+      hairpin_exterior_gap_probe_count: 3
+      private_source_read: false
+      fidelity_gate_passed: false
+      modal_fidelity_replication_started: false
+      development_evaluations: 0
+
+  p2:
+    title: exact dyadic refinement certificate
+    outcome: passed_public_correctness_gate
+    retained_component: integer_affine_parent_provenance
+    result:
+      public_fixtures_passed: 8
+      audited_level_runs_passed: 48
+      hairpin_round_2_faces: 10592
+      hairpin_exact_self_intersection_pairs: 0
+
+  e12:
+    title: CCD pressure shrinkwrap
+    outcome: closed_at_public_gate
+    result:
+      hairpin_initial_exact_self_intersection_pairs: 23
+      source_containment_passed_all: false
+
+  e13:
+    title: source-exclusion shrinkwrap
+    outcome: closed_at_public_gate
+    result:
+      hairpin_refined_exact_self_intersection_pairs: 125
+      source_containment_improved: true
+      global_step_locking: true
+
+  e14:
+    title: dyadic refinement constructor
+    outcome: closed_at_frozen_floating_identity_metric
+    result:
+      hairpin_round_2_faces: 10592
+      hairpin_exact_self_intersection_pairs: 0
+      floating_identity_bbox_fraction: 2.1321144567797444e-11
+      required_maximum: 1.0e-12
+
+  e15:
+    title: IPC barrier sliding carrier
+    outcome: closed_at_public_wall_time_gate
+    result:
+      wall_time_ceiling_seconds: 7200
+      timeout_fixture: near_contact_hairpin
+      timeout_stage: full_mesh_tight_inclusion
+      partial_results_promoted: false
+
+  p3:
+    title: conservative collision partition
+    outcome: closed_at_public_near_field_complexity_gate
+    result:
+      analytic_queries_passed: 1024
+      analytic_false_safe_count: 0
+      hairpin_near_candidate_count: 107581
+      native_full_swept_candidate_count: 79545
+      native_candidate_ratio: 1.352454585454774
+      tangential_full_swept_candidate_count: 1078119
+      tangential_candidate_ratio: 0.09978583069215921
+      tangential_partition_time_ceiling_seconds: 30
+      tangential_partition_timed_out: true
+
+  p4:
+    title: Planar-DAT path certificate
+    outcome: closed_at_public_analytic_oracle_scale_gate
+    result:
+      analytic_queries_total: 1024
+      analytic_queries_passed: 942
+      analytic_oracle_rejections: 82
+      tangent_rejections: 82
+      crossing_rejections: 0
+      separating_rejections: 0
+      zero_motion_rejections: 0
+      rejected_scale_minimum: 1.0e-6
+      rejected_scale_maximum: 0.00644946677103762
+      mesh_fixtures_entered: 0
+      automatic_retries: 0
+
+  p5:
+    title: normalized Tight-Inclusion oracle
+    outcome: passed_public_evaluator_correctness_gate
+    result:
+      query_count: 1024
+      passed_query_count: 1024
+      normalized_raw_label_disagreements: 0
+      normalized_filtered_rejections: 0
+      nondeterministic_queries: 0
+      absolute_p4_filtered_rejections_reproduced: 82
+      mesh_fixture_reads: 0
+      automatic_retries: 0
+
+  p6:
+    title: Planar-DAT mesh certificate
+    outcome: closed_at_public_mechanism_complexity_gate
+    result:
+      fixture: near_contact_hairpin
+      refined_face_count: 10592
+      p2_initial_exact_audit_passed: true
+      native_mechanism_timed_out: true
+      tangential_mechanism_timed_out: true
+      normalized_oracle_calls: 0
+      endpoint_audits: 0
+      automatic_retries: 0
+
+  p7:
+    title: isotropic trust-region mesh certificate
+    outcome: closed_at_public_harness_and_motion_gate
+    result:
+      fixture: near_contact_hairpin
+      p2_initial_exact_audit_passed: true
+      isolated_filter_seconds: 0.0003647500416263938
+      wrap_vertex_count: 5298
+      restricted_wrap_vertex_count: 5298
+      tangential_retained_displacement_ratio: 0.023610530063983677
+      required_retained_displacement_ratio: 0.25
+      normalized_oracle_calls: 0
+      endpoint_audits: 0
+      automatic_retries: 0
+
+  p8:
+    title: deterministic batched Planar-DAT reduction
+    outcome: closed_at_full_upstream_reference_timeout
+    result:
+      mixed_stencil_cases_passed: 24
+      mixed_stencil_maximum_absolute_difference: 0.0
+      full_reference_timeout_seconds: 300
+      batched_hairpin_calls: 0
+
+  p9:
+    title: candidate-contribution certificate
+    outcome: closed_at_floating_branch_semantics_gate
+    result:
+      candidate_count: 194312
+      constrained_decision_mismatches: 7
+      batched_repeat_bitwise: true
+
+  p10:
+    title: isolated upstream arbitration
+    outcome: closed_at_consensus_upstream_disagreement
+    result:
+      arbitration_candidate_count: 5510
+      singleton_failures: 0
+      consensus_ratio_mismatches: 183
+
+  p11:
+    title: full isolated upstream filter
+    outcome: closed_at_global_path_and_endpoint_gate
+    result:
+      candidate_count: 194312
+      singleton_failures: 0
+      filter_seconds: [4.030401374911889, 3.969834625022486]
+      endpoint_self_intersection_pair_count: 317
+      normalized_path_oracle_timed_out: true
+      automatic_retries: 0
+
+  e16_g16:
+    title: fine ambient scaffold global path
+    outcome: closed_at_public_construction_wall_time_gate
+    result:
+      wall_time_ceiling_seconds: 7200
+      failure_stage: exact_fine_scaffold_construction
+      image_reconstruction_started: false
+      private_reads: 0
+
+  e17:
+    title: coarse bi-Lipschitz ambient map
+    outcome: closed_at_public_tangential_retention_gate
+    result:
+      tangential_retained_displacement_ratio: 0.01625629911773128
+      required_retained_displacement_ratio: 0.25
+
+  b1:
+    title: isolated SelfRecon external baseline
+    outcome: closed_at_public_prerequisite_gate
+    result:
+      pinned_source_and_configuration_verified: true
+      authorized_assets_and_runtime_bound: false
+      training_started: false
+
+  e18:
+    title: profiled shape-motion optimization
+    outcome: blocked
+    result:
+      certified_private_smoke_representation_available: false
+
+  e19:
+    title: one-block coarse exact determinant map
+    outcome: closed_at_public_report_and_retention_gates
+    result:
+      tangential_retained_displacement_ratio: 0.07463262637961063
+      required_retained_displacement_ratio: 0.25
+      official_report_serialization_passed: false
+      automatic_retries: 0
+
+  e20:
+    title: four-block composed exact determinant map
+    outcome: closed_at_public_tangential_retention_gate
+    result:
+      tangential_retained_displacement_ratio: 0.09314151713375927
+      required_retained_displacement_ratio: 0.25
+
+  e21:
+    title: four-block active determinant tangent map
+    outcome: closed_at_public_tangential_retention_gate
+    result:
+      native_retained_displacement_ratio: 0.3689838326943633
+      tangential_retained_displacement_ratio: 0.1365960603050218
+      required_retained_displacement_ratio: 0.25
+      native_endpoint_exact_intersection_pair_count: 0
+      executed_path_certificates_passed: true
+      kkt_and_tangent_residual_gates_passed: true
+
+  e22_g22:
+    title: Eulerian image-active PL zero set
+    outcome: closed_at_public_report_and_absolute_fidelity_gates
+    representation: fixed_domain_fixed_sign_piecewise_linear_field
+    treatment_surface_in_image_loss_graph: true
+    truth_geometry_role: evaluator_only
+    public_train_views: 12
+    public_heldout_views: 6
+    updates_per_arm: 300
+    required_truth_geometry_improvement_fraction: 0.10
+    inherited_directional_median_normal_degrees_maximum: 5.0
+    inherited_relative_volume_error_maximum: 0.031
+    exact_next_step_replay_preflight_passed: true
+    full_resolution_p2_regression_passed: true
+    p2_historical_exterior_probes_inside_count: 3
+    official_public_runs: 1
+    official_status: fail
+    official_failure_class: worker_failure_after_endpoint_artifact
+    partial_artifact_promoted: false
+    automatic_retries: 0
+    retained_endpoint_audit:
+      promotable: false
+      optimizer_rerun: false
+      treatment_relative_bidirectional_mean_distance_improvement: 0.7699278097361628
+      control_heldout_iou: 0.8291524188881914
+      treatment_heldout_iou: 0.9265260626863885
+      treatment_directional_median_normal_degrees: [17.865224017244568, 18.53739643185805]
+      required_directional_median_normal_degrees_maximum: 5.0
+      control_and_treatment_endpoint_topology_probes_and_exact_audit: pass
+    protected_reads_allowed: false
+    cloud_gpu_spend_allowed: false
+
+  b2:
+    title: bound SelfRecon public reconstruction
+    outcome: closed_at_dependency_worker_bootstrap
+    official_schedule_epochs: 200
+    pinned_source_bound: true
+    genuine_male_model_bound_in_ignored_storage: true
+    official_processed_frame_count: 689
+    rgb_mask_normal_alignment_passed: true
+    pretrained_endpoint_extracted: false
+    linux_cuda_runtime_bound: false
+    image_build_failures_before_gpu: 2
+    successful_legacy_image_builds: 1
+    deployment_validation_failures_before_gpu: 1
+    dependency_gpu_attempts: 1
+    gpu_worker_started: true
+    dependency_probe_body_started: false
+    dependency_attempt_marker_written: false
+    dependency_failure: modal_runner_python_version_shadowed_by_selfrecon_path
+    build_correction_scientific_stack_changed: false
+    build_only_prerequisites:
+      - noninteractive_utc_package_installation
+      - system_cmake_for_openmesh
+      - compatible_cython_build_isolation_for_pycocotools
+      - platform_minimum_ephemeral_disk_for_conditional_training
+    training_attempts: 0
+    official_200_epoch_training_eligible: false
+    proxy_assets_allowed: false
+    private_adapter_before_public_pass: false
+    automatic_retries: 0
+
+  e23:
+    title: full-rank intrinsic coordinates
+    outcome: closed_at_public_preflight_path_rejection
+    coordinate_map: u_equals_m_plus_l_times_v
+    geometric_scalar_dof_per_arm: 1662
+    matrix_rank: 554
+    matrix_condition_number: 64.06410936564363
+    matrix_round_trip_and_solve_gates_passed: true
+    image_only_gradient_gate_passed: true
+    reachability_gate_passed: true
+    direct_completed_steps: 19
+    intrinsic_completed_steps: 35
+    both_arms_rejected_complete_path_at_scale_zero: true
+    replay_step_reached: false
+    last_accepted_endpoints_passed_topology_probes_and_exact_audit: true
+    official_public_comparison_executed: false
+    automatic_retries: 0
+
+  e24:
+    title: shared train-RGB evidence
+    outcome: blocked_no_frozen_valid_representation
+
+  e25:
+    title: normal-integrable multiresolution image SDF
+    outcome: closed_public_worker_device_mismatch_zero_retry
+    control: frozen_g22_eulerian_image_active_zero_set
+    treatment: visual_hull_neural_sdf_neus_gradient_normals_flexicubes
+    stage_resolutions: [24, 48, 96]
+    evidence: [mask, boundary, normal]
+    rgb_allowed: false
+    feature_tracks_allowed: false
+    truth_geometry_role: evaluator_only
+    search_intermediates_promotable: false
+    stage_boundary_exact_topology_required: true
+    committed_connectivity_frozen: true
+    directional_median_normal_degrees_maximum: 5.0
+    minimum_truth_distance_improvement_over_control: 0.10
+    public_gpu_hours_maximum: 2
+    public_runs: 1
+    public_runs_executed: 1
+    local_public_preflight_runs: 1
+    local_public_preflight_status: pass
+    fixture_stage_audits_passed: 15
+    final_stage_commitments_passed: 5
+    p2_face_count: 10592
+    p2_exact_intersection_pairs: 0
+    protected_read_classes_rejected: 6
+    image_build_attempts: 2
+    image_build_failures_before_deployment: 1
+    image_builds_passed: 1
+    image_deployed: true
+    gpu_workers_started: 1
+    training_started: false
+    optimizer_steps_completed: 0
+    endpoint_artifact_created: false
+    partial_results_promotable: false
+    failure_class: cuda_cpu_camera_intrinsics_device_mismatch
+    build_correction_scientific_configuration_changed: false
+    official_cgal_6_2_archive_digest_bound: true
+    automatic_retries: 0
+
+  b3:
+    title: dual-runtime SelfRecon public baseline
+    outcome: closed_dependency_worker_module_hydration_failure_zero_retry
+    b2_rerun: false
+    scientific_source_or_schedule_changed: false
+    control_plane_python: python3.11_absolute
+    legacy_child_python: python3.8_absolute_isolated
+    legacy_prefix_in_global_path: false
+    official_schedule_epochs: 200
+    rgb_used: true
+    image_build_attempts: 2
+    image_build_failures_before_deployment: 1
+    image_deployed: true
+    legacy_import_assertion: pass
+    control_import_assertion: pass
+    process_isolation_assertion: pass
+    input_bound: true
+    input_binding_bytewise_round_trip: pass
+    input_entry_count: 2759
+    output_empty: true
+    dependency_attempts_allowed: 1
+    dependency_attempts_executed: 1
+    gpu_containers_hydrated: true
+    dependency_function_body_started: false
+    dependency_attempt_marker_written: false
+    dependency_failure: repository_relative_build_constraint_missing_at_remote_module_mount
+    full_public_attempts_allowed: 1
+    full_public_attempts_executed: 0
+    completed_epochs: 0
+    endpoint_created: false
+    automatic_retries: 0
+    private_adapter_registered: false
+
+  e26:
+    title: profiled turntable shape-motion optimization
+    outcome: deferred_until_e25_certified_representation_and_private_smoke
+
+  b4:
+    title: D3-Human public external baseline
+    outcome: closed_public_prerequisite_license_data_asset_evaluator_failure_zero_gpu
+    upstream_revision: 8841b45bc8adb3d0790d68164ffa1f1fee140f5a
+    public_sequence: female-3-casual
+    official_config_iterations: 10000
+    official_train_resolution: [1080, 1080]
+    official_batch_size: 1
+    prerequisite_audits_allowed: 1
+    prerequisite_audits_executed: 1
+    pinned_revision_and_clean_tree: pass
+    official_command_config_and_sequence: pass
+    project_code_license: fail
+    bundled_core_license_coverage: fail
+    smplx_license_binding: fail
+    public_data_terms: fail
+    evaluator_mapping: fail
+    public_data_downloads: 0
+    licensed_model_reads: 0
+    gpu_attempts: 0
+    training_attempts: 0
+    automatic_retries: 0
+
+  b5:
+    title: REC-MV public external baseline
+    outcome: closed_public_prerequisite_license_data_asset_evaluator_failure_zero_gpu
+    upstream_revision: 5898020efc3a7b9fb50c255a59ee638e3b9676e7
+    public_sequence: female-3-casual
+    official_schedule_epochs: 200
+    source_root_license: MIT
+    readme_license_badge: Apache-2.0
+    prerequisite_audits_allowed: 1
+    prerequisite_audits_executed: 1
+    pinned_revision_and_clean_tree: pass
+    root_project_license: pass
+    official_command_and_full_schedule: pass
+    unambiguous_project_license: fail
+    public_sequence_archive_hash_and_terms: fail
+    labeled_template_bundle_hash_and_terms: fail
+    licensed_smpl_binding: fail
+    preprocessing_dependency_license_coverage: fail
+    evaluator_mapping: fail
+    public_data_downloads: 0
+    licensed_model_reads: 0
+    dependency_build_attempts: 0
+    gpu_attempts: 0
+    training_attempts: 0
+    automatic_retries: 0
+
+constraints:
+  private_subject_artifacts_published: false
+  automatic_paid_retries: 0
+  closed_lanes_may_be_retuned: false
+  sealed_test_available_for_selection: false

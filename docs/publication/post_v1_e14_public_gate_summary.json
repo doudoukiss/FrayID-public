@@ -1,0 +1,25 @@
+{
+  "schema_version": "post_v1_e14_public_summary.v1",
+  "experiment_id": "postv1_e14_dyadic_refinement_constructor_r01",
+  "status": "closed_public_geometric_identity_metric_failure",
+  "fixture_count": 8,
+  "passed_fixture_count": 7,
+  "failing_fixture": "near_contact_hairpin",
+  "hairpin_exact_self_intersection_pairs": {
+    "parent": 0,
+    "round_1": 0,
+    "round_2": 0
+  },
+  "hairpin_round_2_face_count": 10592,
+  "hairpin_exact_containment_passed": true,
+  "deterministic_all_level_bytes": true,
+  "observed_maximum_vertex_to_parent_surface_bbox_fraction": 2.1321144567797444e-11,
+  "frozen_maximum_vertex_to_parent_surface_bbox_fraction": 1e-12,
+  "private_input_reads": 0,
+  "development_evidence_reads": 0,
+  "image_loads": 0,
+  "optimizer_steps": 0,
+  "modal_invocations": 0,
+  "sealed_test_accesses": 0,
+  "conclusion": "dyadic refinement eliminated exact intersections, but the frozen floating-point identity metric failed"
+}

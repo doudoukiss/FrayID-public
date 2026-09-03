@@ -1,0 +1,63 @@
+# Python and tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+.venv/
+.venv*/
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+.modal/
+.modal.toml
+modal.toml
+credentials.*
+secrets.*
+*.pem
+*.key
+configs/assets/local_media.yaml
+
+# Private data and generated outputs
+data/
+models/
+external/
+outputs/
+reports/
+
+# Media, geometry, arrays, archives, and weights
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.ply
+*.obj
+*.glb
+*.gltf
+*.npz
+*.npy
+*.pkl
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.zip
+*.tar
+*.tar.gz
+
+# Editors and operating systems
+.DS_Store
+.vscode/
+.idea/
