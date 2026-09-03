@@ -1,7 +1,13 @@
 # FrayID public roadmap
 
-Status: 0902 roadmap terminal; E25/B3/B4/B5 closed; no active lane
+Status: reproduction-first correction accepted; R01 planning-only; no active execution
 V1 geometry: complete and frozen
+
+> **Current decision (2026-09-03):** the primary path is official/reference
+> SelfRecon-style reproduction, then an isolated project-video adapter, then a
+> unified outer-surface fit. Earlier text that calls L03 CUDA or a MANTLE stage
+> the next action is historical and superseded. No capture, CUDA run, paid job,
+> or scientific attempt is currently authorized.
 
 This roadmap describes possible next research without reopening the accepted
 private test or expanding silently into product features.
@@ -479,14 +485,16 @@ inner body but failed its one frozen development evaluation on absolute IoU and
 boundary thresholds; it may not be promoted or tuned. Its exact-topology body
 is nonpromotable initialization evidence for separately registered L03.
 
-L03 has passed public structural/training fixtures, train-only semantic support,
+Historically, L03 passed public structural/training fixtures, train-only semantic support,
 real open-layer initialization, and one local MPS update plus exact checkpoint
-restore. The current next gate is one L40S forward/backward/restore
+restore. At that time, its next gate was one L40S forward/backward/restore
 qualification with a recorded provider rate, 15-minute wall-time ceiling,
 20-percent cost contingency, an immutable claim, and zero automatic retries.
 Passing that gate would still not authorize science. A scientific schedule,
 matched control, development endpoint, contact/penetration audit, and stop
-conditions must be separately frozen before optimizer step one.
+conditions would have required separate freezing before optimizer step one.
+The reproduction-first correction freezes this L03 CUDA/science route; only a
+future, separately registered owner decision could create a new experiment.
 
 ## Accepted reproduction-first roadmap
 

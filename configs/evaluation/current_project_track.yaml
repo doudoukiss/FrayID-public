@@ -1,5 +1,8 @@
 schema_version: frayid_public_project_track.v1
 as_of_date: 2026-09-03
+execution_state: no_active_experiment_or_capture
+next_eligible_action: register_and_locally_qualify_postv3_r01_selfrecon_reference_reproduction_r01
+capture_authorized: false
 primary_target: selfrecon_style_unified_canonical_outer_surface
 representation:
   canonical_geometry: implicit_sdf

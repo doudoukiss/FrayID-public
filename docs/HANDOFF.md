@@ -2,8 +2,14 @@
 
 Status: factual, privacy-safe implementation and experiment record  
 V1 state: closed and accepted  
-Post-V1 state: D03 terminal; L03 local qualification passes; CUDA qualification pending
+Post-V1 state: reproduction-first correction accepted; R01 planning-only; no active execution
 Private artifacts: intentionally unavailable
+
+> **Current decision (2026-09-03):** the project first reproduces the
+> SelfRecon-style unified outer-surface reference path. Earlier chronological
+> statements that call L03 CUDA, Q04, MANTLE, or recapture the next eligible
+> action are historical and superseded. No capture, CUDA run, paid job, or
+> scientific attempt is active.
 
 This handoff explains what was done and what should not be repeated. It omits
 media names, media and artifact hashes, cloud application IDs, private volume
@@ -721,8 +727,8 @@ relative non-regression checks. Its one frozen development evaluation failed
 the absolute `0.85` IoU and `0.015` boundary gates at `0.67428` and `0.015299`.
 D03 is terminal and its body is not a clothed result.
 
-L03 is separately registered and uses that body only as a prior-derived inner
-surface. Upper/lower clothing semantics are supported on all 144 training
+Historically, L03 was separately registered and used that body only as a
+prior-derived inner surface. Upper/lower clothing semantics are supported on all 144 training
 frames and all 12 phase bins. The deterministic initializer emits one open
 upper component with one boundary loop and one open lower component with two
 boundary loops. Exact audits find no layer self-intersection or body
@@ -730,8 +736,9 @@ intersection; 73 source edges are registered as inter-layer contact. Public
 training and one four-record local MPS qualification activate both displacement
 parameter groups, change both, preserve bounded outward motion and fixed
 connectivity, and restore exactly. No development record, sealed record,
-scientific marker, or paid worker was used. The only eligible next execution is
-one separately capped, zero-retry L40S engineering qualification.
+scientific marker, or paid worker was used. At that time, the only eligible next
+execution was one separately capped, zero-retry L40S engineering qualification;
+the reproduction-first correction now freezes that route.
 
 ## Reproduction-first project correction
 
