@@ -506,3 +506,11 @@ RGB/mask/normal alignment. R01 remains `built`, not qualified: the required new
 content-addressed prebuilt runtime artifact and manifest do not yet exist. No
 runtime import, device qualification, training, project-evidence read, or
 capture is active.
+
+The one authorized private artifact build later passed its source, restricted-
+context, frozen-recipe, and registry-auth checks, then the hosted runner
+exhausted disk during image construction. It produced no artifact or provenance
+and made zero retries. R01 therefore remains `built`. Any continuation requires
+a separately registered disk-preflighted build successor and fresh owner
+authorization; this does not authorize runtime import, device qualification,
+training, project-evidence access, or capture.

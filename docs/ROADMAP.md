@@ -1,14 +1,16 @@
 # FrayID public roadmap
 
-Status: R01 registered; local source/data binding passed; prebuilt runtime artifact missing; no active execution
+Status: R01 source/data-bound; sole private build terminally failed before artifact publication; no active execution
 V1 geometry: complete and frozen
 
 > **Current decision (2026-09-03):** the primary path is official/reference
 > SelfRecon-style reproduction, then an isolated project-video adapter, then a
 > unified outer-surface fit. Earlier text that calls L03 CUDA or a MANTLE stage
-> the next action is historical and superseded. R01 now requires one separately
-> authorized private build of its frozen content-addressed runtime recipe. No
-> capture, CUDA run, paid job, or scientific attempt is currently authorized.
+> the next action is historical and superseded. R01's one authorized private
+> build exhausted hosted-runner disk before artifact publication and cannot be
+> retried under the same contract. The next eligible planning action is a new,
+> disk-preflighted build-only successor. No capture, CUDA run, paid GPU job, or
+> scientific attempt is currently authorized.
 
 This roadmap describes possible next research without reopening the accepted
 private test or expanding silently into product features.
@@ -520,9 +522,17 @@ R01 is registered and its zero-GPU local audit passed the pinned source,
 research-only/patent notice, official archive bindings, licensed SMPL binding,
 and exact 689-frame public RGB/mask/normal alignment. It stopped only because a
 new content-addressed prebuilt runtime manifest is absent. The runtime recipe is
-frozen, but no artifact was built or pushed. Registry selection and one bounded
-external build require an explicit owner decision before runtime import or
-device qualification.
+frozen. Its one authorized private build passed source, context, recipe, and
+registry-auth checks, then exhausted hosted-runner disk during construction. It
+terminated before publishing an artifact or provenance and made zero retries.
+
+The consumed workflow was removed after closure and is not eligible for rerun
+or in-place repair. A future build-only successor must freeze a disk-capacity
+preflight and a sufficiently
+provisioned builder while preserving the exact source, recipe, private-registry,
+evidence-exclusion, two-hour, and zero-retry constraints. It requires a new
+contract and fresh explicit authorization; runtime import, device qualification,
+and scientific training remain later gates.
 
 Garment necklines, cuffs or armholes, hems, gaps, and folds are regional
 diagnostics for the primary track. Four physical loops, material coordinates,

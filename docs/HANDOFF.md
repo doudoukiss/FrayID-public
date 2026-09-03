@@ -2,7 +2,7 @@
 
 Status: factual, privacy-safe implementation and experiment record  
 V1 state: closed and accepted  
-Post-V1 state: R01 registered and local source/data bound; runtime artifact missing; no active execution
+Post-V1 state: R01 source/data bound; sole private build failed before artifact publication; no active execution
 Private artifacts: intentionally unavailable
 
 > **Current decision (2026-09-03):** the project first reproduces the
@@ -10,7 +10,9 @@ Private artifacts: intentionally unavailable
 > statements that call L03 CUDA, Q04, MANTLE, or recapture the next eligible
 > action are historical and superseded. No capture, CUDA run, paid job, or
 > scientific attempt is active. R01 is registered but remains blocked before
-> runtime import because its new content-addressed artifact does not yet exist.
+> runtime import: its one authorized private build exhausted hosted-runner disk
+> before publication and made zero retries. A new build route needs a new
+> disk-preflighted registration and explicit authorization.
 
 This handoff explains what was done and what should not be repeated. It omits
 media names, media and artifact hashes, cloud application IDs, private volume
@@ -770,5 +772,21 @@ GPU worker, training step, spend, or retry was used.
 R01 remains at `built`. Its only blocker is the absence of a new
 content-addressed runtime artifact and manifest. The frozen recipe excludes
 licensed assets and datasets and forbids dynamic Modal layer assembly or B2/B3
-image reuse. No artifact was built or pushed; that requires a separately
-authorized private-registry build before import/device qualification.
+image reuse. No artifact was built or pushed.
+
+The one subsequently authorized private build passed source checkout,
+restricted-context checks, recipe verification, builder setup, and private-
+registry authentication. The hosted runner then exhausted disk during image
+construction and terminated before provenance generation or artifact
+publication. A post-failure registry check found no package. It used no GPU,
+training, camera, project evidence, development evidence, or sealed evidence,
+and made zero retries.
+
+This is an infrastructure failure rather than a scientific rejection, but the
+authorized build attempt is terminal. It must not be retried or modified in
+place. The executable entry point was removed after closure to prevent an
+accidental second dispatch; its historical source remains in private history.
+Continuing requires a separately registered successor whose changed mechanism
+is a disk-capacity preflight and sufficiently provisioned builder, followed by
+fresh owner authorization. R01 remains `built`; R02, R03, runtime import,
+device qualification, and official training have not started.
