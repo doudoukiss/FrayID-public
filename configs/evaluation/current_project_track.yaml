@@ -1,6 +1,6 @@
 schema_version: frayid_public_project_track.v1
 as_of_date: 2026-09-03
-execution_state: stage1_capture_registered_camera_not_open
+execution_state: stage1_capture_selected_camera_not_open
 next_eligible_action: run_zero_save_visible_framing_preview_then_record_separate_bidirectional_clips
 capture_authorized: true
 capture_authorization_scope: stage1_single_camera_unified_outer_surface_only

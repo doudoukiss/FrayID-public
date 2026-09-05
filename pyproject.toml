@@ -38,7 +38,8 @@ dev = [
 ]
 
 [project.scripts]
-frayid = "frayid.cli:app"
+frayid = "frayid.active_cli:app"
+frayid-legacy = "frayid.cli:app"
 
 [build-system]
 requires = ["hatchling"]
@@ -51,7 +52,6 @@ packages = ["src/frayid"]
 line-length = 100
 target-version = "py311"
 src = ["src", "tests", "scripts"]
-extend-exclude = ["docs/0831"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]

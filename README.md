@@ -10,24 +10,12 @@ generated media, private run identifiers, or artifact fingerprints.
 
 ## Start here
 
-Read these documents in order when reviewing or continuing the project:
+Read [`configs/evaluation/current_project_track.yaml`](configs/evaluation/current_project_track.yaml)
+for current public state and [`docs/PROJECT_CONTEXT.md`](docs/PROJECT_CONTEXT.md)
+for the scientific target. The handoff, review guide, experiment register, and
+roadmap are historical references rather than mandatory reading.
 
-1. [`docs/PROJECT_CONTEXT.md`](docs/PROJECT_CONTEXT.md) explains the problem,
-   architecture, evidence contract, and acceptance criteria.
-2. [`docs/HANDOFF.md`](docs/HANDOFF.md) records what was implemented, which
-   approaches failed, and the accepted V1 result.
-3. [`docs/AI_REVIEW_GUIDE.md`](docs/AI_REVIEW_GUIDE.md) gives an AI reviewer a
-   concise reading order, source map, and decision boundary.
-4. [`configs/evaluation/post_v1_experiments.yaml`](configs/evaluation/post_v1_experiments.yaml)
-   provides the E0-E26, B1-B5, and P0-P11 state in machine-readable form.
-5. [`configs/evaluation/current_project_track.yaml`](configs/evaluation/current_project_track.yaml)
-   records the corrected reproduction-first target and claim boundaries.
-6. [`docs/ROADMAP.md`](docs/ROADMAP.md) separates completed work from possible
-   post-V1 research.
-
-Together with the source and tests, these files are intended to provide enough
-context for a web-based code reviewer or AI assistant to understand the project
-without access to private data.
+The public repository has no GitHub Actions workflow. Use targeted local tests.
 
 ## Current reproduction-first direction
 
